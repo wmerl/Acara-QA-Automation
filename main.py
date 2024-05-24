@@ -1,8 +1,14 @@
 import asyncio
 
+from colorama import init
 from playwright.async_api import async_playwright, Playwright
 from consts import Xpath, Link, ID
 from helpers.browser_automation_helpers import sign_in, test_header_buttons_elements
+from colorama import Fore, Back, Style
+
+init()
+
+
 
 
 async def run(playwright: Playwright):
@@ -12,12 +18,14 @@ async def run(playwright: Playwright):
     context = await playwright.chromium.launch_persistent_context(
         user_data_dir,
         headless=False,
+        permissions=["geolocation"]
     )
 
     del user_data_dir
 
     page = context.pages[0]
     await asyncio.sleep(0.5)
+
 
     await sign_in(page)
 
