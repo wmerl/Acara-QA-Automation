@@ -1,7 +1,8 @@
 import asyncio
 
 from playwright.async_api import async_playwright, Playwright
-from consts import Xpath, Link
+from consts import Xpath, Link, ID
+from helpers.browser_automation_helpers import sign_in, test_header_buttons_elements
 
 
 async def run(playwright: Playwright):
@@ -16,28 +17,16 @@ async def run(playwright: Playwright):
     del user_data_dir
 
     page = context.pages[0]
-    await asyncio.sleep(1)
+    await asyncio.sleep(0.5)
 
-    await page.goto(Link.SIGN_IN_LINK, wait_until='load')
-
-    await page.wait_for_selector(Xpath.EMAIL_INPUT_XPATH)
-
-    await page.fill(
-        Xpath.EMAIL_INPUT_XPATH,
-        'Email Test'
-    )
-
-    await page.fill(
-        Xpath.PASSWORD_INPUT_XPATH,
-        'Password Test'
-    )
-
-    await page.click(
-        Xpath.LOGIN_BTN_XPATH,
-    )
+    await sign_in(page)
 
     print('ok 1')
-    await asyncio.sleep(10)
+
+    await test_header_buttons_elements(page)
+
+
+
 
 
 async def main():
