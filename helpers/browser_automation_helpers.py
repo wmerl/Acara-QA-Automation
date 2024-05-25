@@ -61,17 +61,12 @@ async def sign_in(page: Page):
     email: str = 'touchdream0609@gmail.com'
     password: str = '123123'
 
-    await page.fill(
-        Xpath.EMAIL_INPUT_XPATH,
-        email
-    )
+    await page.fill(Xpath.EMAIL_INPUT_XPATH, email, force=True)
 
     await asyncio.sleep(.5)
 
-    await page.fill(
-        Xpath.PASSWORD_INPUT_XPATH,
-        password
-    )
+    await page.click(Xpath.PASSWORD_INPUT_XPATH, force=True, no_wait_after=True)
+    await page.fill(Xpath.PASSWORD_INPUT_XPATH, password, force=True, no_wait_after=False)
 
     await asyncio.sleep(.5)
 
@@ -117,94 +112,105 @@ async def test_header_buttons_elements(page: Page):
 async def add_new_event(page: Page):
     sleep_time_between_actions: int = 1
 
+    TEXT_INPUTS: list[dict[str: str]] = [
+        {
+            'xpath': Xpath.EVENT_TITLE_INPUT_XPATH,
+            'value': 'title'
+        },
+        {
+            'xpath': Xpath.SHART_EVENT_INPUT_XPATH,
+            'value': 'shart title'
+        },
+        {
+            'xpath': Xpath.TEXT_BANNER_INPUT_XPATH,
+            'value': 'text banner'
+        },
+        {
+            'xpath': Xpath.HEADLINE_INPUT_XPATH,
+            'value': 'headline'
+        },
+        {
+            'xpath': Xpath.VENUE_INPUT_XPATH,
+            'value': 'north'
+        },
+        {
+            'xpath': Xpath.FEATURED_TALENT_INPUT_XPATH,
+            'value': 'featured talent'
+        },
+        {
+            'xpath': Xpath.ADD_FEATURED_ARTISTS_INPUT_XPATH,
+            'value': 'add featured artists'
+        },
+        {
+            'xpath': Xpath.TALENT_LABEL_INPUT_XPATH,
+            'value': 'talent label'
+        },
+        {
+            'xpath': Xpath.ADD_ARTISTS_INPUT_XPATH,
+            'value': 'add artists'
+        },
+        {
+            'xpath': Xpath.ADD_KEYWORDS_INPUT_XPATH,
+            'value': 'add keywords'
+        },
+        {
+            'xpath': Xpath.ADD_TAGS_INPUT_XPATH,
+            'value': 'add tags'
+        },
+    ]
 
     await page.wait_for_selector(Xpath.EVENT_TITLE_INPUT_XPATH)
     await asyncio.sleep(sleep_time_between_actions)
 
-    await page.fill(
-        Xpath.EVENT_TITLE_INPUT_XPATH,
-        'Title Test'
-    )
+    # Filling the Text Inputs
+    for input in TEXT_INPUTS:
 
-    await asyncio.sleep(sleep_time_between_actions)
+        xpath: str = input.get('xpath')
+        value: str = input.get('value')
 
-    await page.fill(
-        Xpath.SHART_EVENT_INPUT_XPATH,
-        'Shart Title Test'
-    )
+        if 'tags' in value:
+            await asyncio.sleep(sleep_time_between_actions / 2)
+            await page.mouse.wheel(delta_x=0, delta_y=2000)
+            await asyncio.sleep(sleep_time_between_actions / 2)
 
-    await asyncio.sleep(sleep_time_between_actions)
+        await page.click(xpath, force=True, no_wait_after=True)
+        await page.fill(xpath, value.capitalize() + ' Test', force=True, no_wait_after=False)
+        await asyncio.sleep(sleep_time_between_actions)
 
-    await page.fill(
-        Xpath.TEXT_BANNER_INPUT_XPATH,
-        'Text Banner Test'
-    )
+        if 'tags' in value:
+            await asyncio.sleep(sleep_time_between_actions / 2)
+            await page.mouse.wheel(delta_x=0, delta_y=-2000)
+            await asyncio.sleep(sleep_time_between_actions / 2)
 
-    await asyncio.sleep(sleep_time_between_actions)
+        if 'north' in value:
+            await page.click('#flt-semantic-node-313')
+            await asyncio.sleep(sleep_time_between_actions)
 
-    await page.fill(
-        Xpath.HEADLINE_INPUT_XPATH,
-        'headline Test'
-    )
 
-    await asyncio.sleep(sleep_time_between_actions)
-
-    await page.fill(
-        Xpath.VENUE_INPUT_XPATH,
-        'North '
-    )
-
-    await asyncio.sleep(sleep_time_between_actions)
 
 
     await page.click(
-        '#flt-semantic-node-313',
+        Xpath.DEFAULT_LOCAL_DROPDOWN_XPATH,
     )
-
     await asyncio.sleep(sleep_time_between_actions)
 
-    await page.fill(
-        Xpath.FEATURED_TALENT_INPUT_XPATH,
-        'Featured Talent Test'
+    await page.click(
+        Xpath.ENGLISH_LOCAL_OPTION_XPATH,
     )
-
     await asyncio.sleep(sleep_time_between_actions)
 
-    await page.fill(
-        Xpath.ADD_FEATURED_ARTISTS_INPUT_XPATH,
-        'Add Featured Artists Test'
+    await page.click(
+        Xpath.SUPPORTED_LOCAL_DROPDOWN_XPATH,
     )
-
     await asyncio.sleep(sleep_time_between_actions)
 
-    await page.fill(
-        Xpath.TALENT_LABEL_INPUT_XPATH,
-        'Talent Label Test'
+    await page.click(
+        Xpath.ENGLISH_LOCAL_OPTION_XPATH,
     )
-
     await asyncio.sleep(sleep_time_between_actions)
 
-    await page.fill(
-        Xpath.ADD_ARTISTS_INPUT_XPATH,
-        'Add Artists Test'
-    )
-
-    await asyncio.sleep(sleep_time_between_actions)
-
-    await page.fill(
-        Xpath.ADD_KEYWORDS_INPUT_XPATH,
-        'Add Keywords Test'
-    )
-
-    await asyncio.sleep(sleep_time_between_actions/2)
-    await page.mouse.wheel(delta_x=0, delta_y=2000)
-    await asyncio.sleep(sleep_time_between_actions / 2)
 
 
-    await page.fill(
-        Xpath.ADD_TAGS_INPUT_XPATH,
-        'Add Tags Test'
-    )
 
     await asyncio.sleep(500)
 
