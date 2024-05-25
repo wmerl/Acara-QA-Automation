@@ -58,7 +58,6 @@ async def sign_in(page: Page):
     except:
         print('not found')
 
-
     email: str = 'touchdream0609@gmail.com'
     password: str = '123123'
 
@@ -113,5 +112,99 @@ async def test_header_buttons_elements(page: Page):
     await asyncio.sleep(sleep_time_between_actions)
 
     await page.click(ID.SETTINGS_HEADER_BTN_ID)
-    await asyncio.sleep(20000)
+
+
+async def add_new_event(page: Page):
+    sleep_time_between_actions: int = 1
+
+
+    await page.wait_for_selector(Xpath.EVENT_TITLE_INPUT_XPATH)
+    await asyncio.sleep(sleep_time_between_actions)
+
+    await page.fill(
+        Xpath.EVENT_TITLE_INPUT_XPATH,
+        'Title Test'
+    )
+
+    await asyncio.sleep(sleep_time_between_actions)
+
+    await page.fill(
+        Xpath.SHART_EVENT_INPUT_XPATH,
+        'Shart Title Test'
+    )
+
+    await asyncio.sleep(sleep_time_between_actions)
+
+    await page.fill(
+        Xpath.TEXT_BANNER_INPUT_XPATH,
+        'Text Banner Test'
+    )
+
+    await asyncio.sleep(sleep_time_between_actions)
+
+    await page.fill(
+        Xpath.HEADLINE_INPUT_XPATH,
+        'headline Test'
+    )
+
+    await asyncio.sleep(sleep_time_between_actions)
+
+    await page.fill(
+        Xpath.VENUE_INPUT_XPATH,
+        'North '
+    )
+
+    await asyncio.sleep(sleep_time_between_actions)
+
+
+    await page.click(
+        '#flt-semantic-node-313',
+    )
+
+    await asyncio.sleep(sleep_time_between_actions)
+
+    await page.fill(
+        Xpath.FEATURED_TALENT_INPUT_XPATH,
+        'Featured Talent Test'
+    )
+
+    await asyncio.sleep(sleep_time_between_actions)
+
+    await page.fill(
+        Xpath.ADD_FEATURED_ARTISTS_INPUT_XPATH,
+        'Add Featured Artists Test'
+    )
+
+    await asyncio.sleep(sleep_time_between_actions)
+
+    await page.fill(
+        Xpath.TALENT_LABEL_INPUT_XPATH,
+        'Talent Label Test'
+    )
+
+    await asyncio.sleep(sleep_time_between_actions)
+
+    await page.fill(
+        Xpath.ADD_ARTISTS_INPUT_XPATH,
+        'Add Artists Test'
+    )
+
+    await asyncio.sleep(sleep_time_between_actions)
+
+    await page.fill(
+        Xpath.ADD_KEYWORDS_INPUT_XPATH,
+        'Add Keywords Test'
+    )
+
+    await asyncio.sleep(sleep_time_between_actions/2)
+    await page.mouse.wheel(delta_x=0, delta_y=2000)
+    await asyncio.sleep(sleep_time_between_actions / 2)
+
+
+    await page.fill(
+        Xpath.ADD_TAGS_INPUT_XPATH,
+        'Add Tags Test'
+    )
+
+    await asyncio.sleep(500)
 
