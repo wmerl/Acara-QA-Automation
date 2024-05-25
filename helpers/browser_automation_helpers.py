@@ -158,6 +158,12 @@ async def add_new_event(page: Page):
             'value': 'add tags'
         },
     ]
+    DROP_DOWNS: list[str] = [
+        Xpath.DEFAULT_LOCAL_DROPDOWN_XPATH,
+        Xpath.SUPPORTED_LOCAL_DROPDOWN_XPATH,
+        Xpath.EVENT_CATEGORY_DROPDOWN_XPATH,
+        Xpath.AGE_RESTRICTION_DROPDOWN_XPATH,
+    ]
 
     await page.wait_for_selector(Xpath.EVENT_TITLE_INPUT_XPATH)
     await asyncio.sleep(sleep_time_between_actions)
@@ -186,31 +192,14 @@ async def add_new_event(page: Page):
             await page.click('#flt-semantic-node-313')
             await asyncio.sleep(sleep_time_between_actions)
 
+    # Choosing DropDown Options
+    for drop_down in DROP_DOWNS:
 
+        await page.click(drop_down)
+        await asyncio.sleep(sleep_time_between_actions)
 
-
-    await page.click(
-        Xpath.DEFAULT_LOCAL_DROPDOWN_XPATH,
-    )
-    await asyncio.sleep(sleep_time_between_actions)
-
-    await page.click(
-        Xpath.ENGLISH_LOCAL_OPTION_XPATH,
-    )
-    await asyncio.sleep(sleep_time_between_actions)
-
-    await page.click(
-        Xpath.SUPPORTED_LOCAL_DROPDOWN_XPATH,
-    )
-    await asyncio.sleep(sleep_time_between_actions)
-
-    await page.click(
-        Xpath.ENGLISH_LOCAL_OPTION_XPATH,
-    )
-    await asyncio.sleep(sleep_time_between_actions)
-
-
-
+        await page.click(Xpath.FIRST_OPTION_XPATH)
+        await asyncio.sleep(sleep_time_between_actions)
 
     await asyncio.sleep(500)
 
