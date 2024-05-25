@@ -164,6 +164,28 @@ async def add_new_event(page: Page):
         Xpath.EVENT_CATEGORY_DROPDOWN_XPATH,
         Xpath.AGE_RESTRICTION_DROPDOWN_XPATH,
     ]
+    DATE_CHOOSERS: list[dict[str: str]] = [
+        {
+            'xpath': Xpath.EVENT_START_DATE_CHOOSER_XPATH,
+            'value': '05/27/2024'
+        },
+        {
+            'xpath': Xpath.EVENT_END_DATE_CHOOSER_XPATH,
+            'value': '05/29/2024'
+        },
+    ]
+    TIME_CHOOSERS: list[dict[str: str]] = [
+        {
+            'xpath': Xpath.EVENT_START_TIME_CHOOSER_XPATH,
+            'hour_value': '1',
+            'minutes_value': '30',
+        },
+        {
+            'xpath': Xpath.EVENT_END_TIME_CHOOSER_XPATH,
+            'hour_value': '5',
+            'minutes_value': '30',
+        },
+    ]
 
     await page.wait_for_selector(Xpath.EVENT_TITLE_INPUT_XPATH)
     await asyncio.sleep(sleep_time_between_actions)
@@ -189,7 +211,7 @@ async def add_new_event(page: Page):
             await asyncio.sleep(sleep_time_between_actions / 2)
 
         if 'north' in value:
-            await page.click('#flt-semantic-node-313')
+            await page.click(Xpath.NORTH_OPTION_XPATH)
             await asyncio.sleep(sleep_time_between_actions)
 
     # Choosing DropDown Options
@@ -200,6 +222,53 @@ async def add_new_event(page: Page):
 
         await page.click(Xpath.FIRST_OPTION_XPATH)
         await asyncio.sleep(sleep_time_between_actions)
+
+    # Handle Date Choosers
+    for date_chooser in DATE_CHOOSERS:
+
+        xpath: str = date_chooser.get('xpath')
+        value: str = date_chooser.get('value')
+
+        await page.click(xpath, force=True, no_wait_after=False)
+        await asyncio.sleep(sleep_time_between_actions)
+
+        await page.click(Xpath.MODIFY_DATE_TO_INPUT_MODE_XPATH, force=True, no_wait_after=False)
+        await asyncio.sleep(sleep_time_between_actions)
+
+        await page.fill(Xpath.DATE_INPUT_XPATH, value, force=True, no_wait_after=False)
+        await asyncio.sleep(sleep_time_between_actions)
+
+        await page.click(Xpath.DATE_OK_BTN_XPATH, force=True, no_wait_after=False)
+        await asyncio.sleep(sleep_time_between_actions)
+
+    # Handle Time Choosers
+    for time_chooser in TIME_CHOOSERS:
+
+        xpath: str = time_chooser.get('xpath')
+        hour_value: str = time_chooser.get('hour_value')
+        minutes_value: str = time_chooser.get('minutes_value')
+
+        await page.click(xpath, force=True, no_wait_after=False)
+        await asyncio.sleep(sleep_time_between_actions)
+
+        await page.click(Xpath.MODIFY_TIME_TO_INPUT_MODE_XPATH, force=True, no_wait_after=False)
+        await asyncio.sleep(sleep_time_between_actions)
+
+        await page.click(Xpath.TIME_HOUR_TEXTEREA_XPATH, force=True, no_wait_after=False)
+        await asyncio.sleep(sleep_time_between_actions/2)
+
+        await page.fill(Xpath.TIME_HOUR_TEXTEREA_XPATH, hour_value, force=True, no_wait_after=False)
+        await asyncio.sleep(sleep_time_between_actions)
+
+        await page.click(Xpath.TIME_MINUTES_TEXTEREA_XPATH, force=True, no_wait_after=False)
+        await asyncio.sleep(sleep_time_between_actions / 2)
+
+        await page.fill(Xpath.TIME_MINUTES_TEXTEREA_XPATH, minutes_value, force=True, no_wait_after=False)
+        await asyncio.sleep(sleep_time_between_actions)
+
+        await page.click(Xpath.TIME_OK_BTN_XPATH, force=True, no_wait_after=False)
+        await asyncio.sleep(sleep_time_between_actions)
+
 
     await asyncio.sleep(500)
 

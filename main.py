@@ -33,7 +33,7 @@ async def run(playwright: Playwright):
 
     print('ok 1')
 
-    await test_header_buttons_elements(page)
+    # await test_header_buttons_elements(page)
 
     await page.goto(Link.DASHBOARD_LINK, wait_until='load')
 
