@@ -2,7 +2,7 @@ import asyncio
 
 from playwright.async_api import Page
 
-from consts import Link, Xpath, ID
+from consts import Link, Xpath, ID, Credentials
 
 from colorama import init
 from colorama import Fore, Back, Style
@@ -58,15 +58,12 @@ async def sign_in(page: Page):
     except:
         print('not found')
 
-    email: str = 'touchdream0609@gmail.com'
-    password: str = '123123'
-
-    await page.fill(Xpath.EMAIL_INPUT_XPATH, email, force=True)
+    await page.fill(Xpath.EMAIL_INPUT_XPATH, Credentials.EMAIL, force=True)
 
     await asyncio.sleep(.5)
 
     await page.click(Xpath.PASSWORD_INPUT_XPATH, force=True, no_wait_after=True)
-    await page.fill(Xpath.PASSWORD_INPUT_XPATH, password, force=True, no_wait_after=False)
+    await page.fill(Xpath.PASSWORD_INPUT_XPATH, Credentials.PASSWORD, force=True, no_wait_after=False)
 
     await asyncio.sleep(.5)
 
@@ -187,6 +184,13 @@ async def add_new_event(page: Page):
         },
     ]
 
+    await page.goto(Link.DASHBOARD_LINK, wait_until='load')
+
+    await page.wait_for_selector(Xpath.NEW_EVENT_BTN_XPATH)
+    await asyncio.sleep(1)
+
+    await page.click(Xpath.NEW_EVENT_BTN_XPATH)
+
     await page.wait_for_selector(Xpath.EVENT_TITLE_INPUT_XPATH)
     await asyncio.sleep(sleep_time_between_actions)
 
@@ -269,6 +273,40 @@ async def add_new_event(page: Page):
         await page.click(Xpath.TIME_OK_BTN_XPATH, force=True, no_wait_after=False)
         await asyncio.sleep(sleep_time_between_actions)
 
+    await page.click(Xpath.TICKETS_DROP_DOWN_XPATH, force=True, no_wait_after=False)
+    await asyncio.sleep(sleep_time_between_actions)
 
-    await asyncio.sleep(500)
+    await page.click(Xpath.TICKETS_TYPE_BTN_XPATH, force=True, no_wait_after=False)
+    await asyncio.sleep(sleep_time_between_actions)
+
+    await page.click(Xpath.ADD_TICKETS_TYPE_BTN_XPATH, force=True, no_wait_after=False)
+    await asyncio.sleep(sleep_time_between_actions)
+
+    await page.wait_for_selector(Xpath.TICKET_NAME_INPUT_XPATH)
+    await asyncio.sleep(sleep_time_between_actions)
+
+    await page.click(Xpath.TICKET_NAME_INPUT_XPATH, force=True, no_wait_after=False)
+    await page.fill(Xpath.TICKET_NAME_INPUT_XPATH, 'Ticket 1', force=True, no_wait_after=False)
+    await asyncio.sleep(sleep_time_between_actions)
+
+    await page.click(Xpath.NUMBER_OF_TICKETS_INPUT_XPATH, force=True, no_wait_after=False)
+    await page.fill(Xpath.NUMBER_OF_TICKETS_INPUT_XPATH, '400', force=True, no_wait_after=False)
+    await asyncio.sleep(sleep_time_between_actions)
+
+    await page.click(Xpath.BASE_PRICE_INPUT_XPATH, force=True, no_wait_after=False)
+    await page.fill(Xpath.BASE_PRICE_INPUT_XPATH, '400', force=True, no_wait_after=False)
+    await asyncio.sleep(sleep_time_between_actions)
+
+    await page.click(Xpath.ALL_IN_PRICE_INPUT_XPATH, force=True, no_wait_after=False)
+    await page.fill(Xpath.ALL_IN_PRICE_INPUT_XPATH, '550', force=True, no_wait_after=False)
+    await asyncio.sleep(sleep_time_between_actions)
+
+    await page.click(Xpath.APPLY_BTN_XPATH, force=True, no_wait_after=False)
+    await asyncio.sleep(sleep_time_between_actions)
+
+    await page.wait_for_selector(Xpath.PUBLISH_BTN_XPATH)
+    await page.click(Xpath.PUBLISH_BTN_XPATH, force=True, no_wait_after=False)
+    await asyncio.sleep(sleep_time_between_actions)
+
+    await asyncio.sleep(500000)
 

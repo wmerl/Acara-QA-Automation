@@ -35,14 +35,8 @@ async def run(playwright: Playwright):
 
     # await test_header_buttons_elements(page)
 
-    await page.goto(Link.DASHBOARD_LINK, wait_until='load')
-
-    await page.wait_for_selector(Xpath.NEW_EVENT_BTN_XPATH)
-    await asyncio.sleep(1)
-
-    await page.click(Xpath.NEW_EVENT_BTN_XPATH)
-
     await add_new_event(page)
+
 
 
 
