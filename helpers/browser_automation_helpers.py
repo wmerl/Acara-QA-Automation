@@ -1,4 +1,5 @@
 import asyncio
+import random
 
 from playwright.async_api import Page
 
@@ -112,7 +113,7 @@ async def add_new_event(page: Page):
     TEXT_INPUTS: list[dict[str: str]] = [
         {
             'xpath': Xpath.EVENT_TITLE_INPUT_XPATH,
-            'value': 'title'
+            'value': f'title {random.randint(1, 1000)}',
         },
         {
             'xpath': Xpath.SHART_EVENT_INPUT_XPATH,
@@ -164,7 +165,7 @@ async def add_new_event(page: Page):
     DATE_CHOOSERS: list[dict[str: str]] = [
         {
             'xpath': Xpath.EVENT_START_DATE_CHOOSER_XPATH,
-            'value': '05/27/2024'
+            'value': '06/01/2024'
         },
         {
             'xpath': Xpath.EVENT_END_DATE_CHOOSER_XPATH,
@@ -182,6 +183,50 @@ async def add_new_event(page: Page):
             'hour_value': '5',
             'minutes_value': '30',
         },
+    ]
+    TICKETS_MAPS: list[str] = [
+        Xpath.TICKETS_DROP_DOWN_XPATH,
+        Xpath.TICKETS_TYPE_BTN_XPATH,
+        Xpath.ADD_TICKETS_TYPE_BTN_XPATH,
+        Xpath.TICKET_NAME_INPUT_XPATH,
+    ]
+    TICKETS_XPATH_VALUES: list[dict[str: str]] = [
+        {
+            'xpath': Xpath.TICKET_NAME_INPUT_XPATH,
+            'value': 'Ticket 1',
+        },
+        {
+            'xpath': Xpath.NUMBER_OF_TICKETS_INPUT_XPATH,
+            'value': '400',
+        },
+        {
+            'xpath': Xpath.BASE_PRICE_INPUT_XPATH,
+            'value': '400',
+        },
+        {
+            'xpath': Xpath.ALL_IN_PRICE_INPUT_XPATH,
+            'value': '550',
+        },
+    ]
+    TIERS_MAPS: list[str] = [
+        Xpath.TIERS_BTN_XPATH,
+        Xpath.ADD_FIRST_TIER_BTN_XPATH,
+        Xpath.INVENTORY_CHECKBOX_XPATH,
+    ]
+    TIERS_XPATH_VALUES: list[dict[str: str]] = [
+        {
+            'xpath': Xpath.TIER_NAME_INPUT_XPATH,
+            'value': '20',
+        },
+        {
+            'xpath': Xpath.BASE_PRICE_TIER_INPUT_XPATH,
+            'value': '150',
+        },
+        {
+            'xpath': Xpath.ALL_IN_PRICE_TIER_INPUT_XPATH,
+            'value': '250',
+        },
+
     ]
 
     await page.goto(Link.DASHBOARD_LINK, wait_until='load')
@@ -273,40 +318,53 @@ async def add_new_event(page: Page):
         await page.click(Xpath.TIME_OK_BTN_XPATH, force=True, no_wait_after=False)
         await asyncio.sleep(sleep_time_between_actions)
 
-    await page.click(Xpath.TICKETS_DROP_DOWN_XPATH, force=True, no_wait_after=False)
-    await asyncio.sleep(sleep_time_between_actions)
+    # Navigating to Tickets
+    for tickets_map in TICKETS_MAPS:
+        await page.click(tickets_map, force=True, no_wait_after=False)
+        await asyncio.sleep(sleep_time_between_actions)
 
-    await page.click(Xpath.TICKETS_TYPE_BTN_XPATH, force=True, no_wait_after=False)
-    await asyncio.sleep(sleep_time_between_actions)
+    # Filling the Text Inputs of Tickets
+    for tickets in TICKETS_XPATH_VALUES:
+        xpath: str = tickets.get('xpath')
+        value: str = tickets.get('value')
 
-    await page.click(Xpath.ADD_TICKETS_TYPE_BTN_XPATH, force=True, no_wait_after=False)
-    await asyncio.sleep(sleep_time_between_actions)
+        await page.click(xpath, force=True, no_wait_after=False)
+        await page.fill(xpath, value, force=True, no_wait_after=False)
+        await asyncio.sleep(sleep_time_between_actions)
 
-    await page.wait_for_selector(Xpath.TICKET_NAME_INPUT_XPATH)
-    await asyncio.sleep(sleep_time_between_actions)
+    # Navigating to Tiers
+    for tiers_map in TIERS_MAPS:
+        await page.wait_for_selector(tiers_map)
+        await page.click(tiers_map, force=True, no_wait_after=False)
+        await asyncio.sleep(sleep_time_between_actions)
 
-    await page.click(Xpath.TICKET_NAME_INPUT_XPATH, force=True, no_wait_after=False)
-    await page.fill(Xpath.TICKET_NAME_INPUT_XPATH, 'Ticket 1', force=True, no_wait_after=False)
-    await asyncio.sleep(sleep_time_between_actions)
+    # Filling the Text Inputs of Tiers
+    for tiers in TIERS_XPATH_VALUES:
+        xpath: str = tiers.get('xpath')
+        value: str = tiers.get('value')
 
-    await page.click(Xpath.NUMBER_OF_TICKETS_INPUT_XPATH, force=True, no_wait_after=False)
-    await page.fill(Xpath.NUMBER_OF_TICKETS_INPUT_XPATH, '400', force=True, no_wait_after=False)
-    await asyncio.sleep(sleep_time_between_actions)
+        await page.click(xpath, force=True, no_wait_after=False)
+        await page.fill(xpath, value, force=True, no_wait_after=False)
+        await asyncio.sleep(sleep_time_between_actions)
 
-    await page.click(Xpath.BASE_PRICE_INPUT_XPATH, force=True, no_wait_after=False)
-    await page.fill(Xpath.BASE_PRICE_INPUT_XPATH, '400', force=True, no_wait_after=False)
-    await asyncio.sleep(sleep_time_between_actions)
 
-    await page.click(Xpath.ALL_IN_PRICE_INPUT_XPATH, force=True, no_wait_after=False)
-    await page.fill(Xpath.ALL_IN_PRICE_INPUT_XPATH, '550', force=True, no_wait_after=False)
-    await asyncio.sleep(sleep_time_between_actions)
+    PUBLISHING_XPATHS: list[str] = [
+        Xpath.APPLY_TIER_BTN_1_XPATH,
+        Xpath.APPLY_TIER_BTN_2_XPATH,
+        Xpath.PUBLISH_BTN_XPATH,
+    ]
 
-    await page.click(Xpath.APPLY_BTN_XPATH, force=True, no_wait_after=False)
-    await asyncio.sleep(sleep_time_between_actions)
+    for i, publishing_xpath in enumerate(PUBLISHING_XPATHS, start=1):
 
-    await page.wait_for_selector(Xpath.PUBLISH_BTN_XPATH)
-    await page.click(Xpath.PUBLISH_BTN_XPATH, force=True, no_wait_after=False)
-    await asyncio.sleep(sleep_time_between_actions)
+        await page.wait_for_selector(publishing_xpath)
+        await page.click(publishing_xpath, force=True, no_wait_after=False)
+
+        multi = 10
+        if i == 3:
+            multi = 1
+
+        await asyncio.sleep(sleep_time_between_actions * multi)
+        del multi
 
     await asyncio.sleep(500000)
 
