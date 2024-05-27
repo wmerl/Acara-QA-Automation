@@ -1,7 +1,7 @@
 import asyncio
 import random
 
-from playwright.async_api import Page
+from playwright.async_api import Page, Position
 
 from consts import Link, Xpath, ID, Credentials
 
@@ -318,6 +318,23 @@ async def add_new_event(page: Page):
         await page.click(Xpath.TIME_OK_BTN_XPATH, force=True, no_wait_after=False)
         await asyncio.sleep(sleep_time_between_actions)
 
+    # Add Event Logo
+    await page.click(Xpath.DESIGN_BTN_XPATH, force=True, no_wait_after=False)
+
+    await page.wait_for_selector(Xpath.EVENT_LOGO_BTN_XPATH)
+    async with page.expect_file_chooser() as fc_info:
+        await asyncio.sleep(sleep_time_between_actions)
+        await page.mouse.move(640, 300)
+        await page.mouse.down()
+        await page.mouse.up()
+
+    file_chooser = await fc_info.value
+    await asyncio.sleep(sleep_time_between_actions)
+
+    temporary_file_path: str = r"C:\Users\Mohammed\Downloads\image-1-1651856047.jpg"
+    await file_chooser.set_files(temporary_file_path)
+
+
     # Navigating to Tickets
     for tickets_map in TICKETS_MAPS:
         await page.click(tickets_map, force=True, no_wait_after=False)
@@ -365,6 +382,7 @@ async def add_new_event(page: Page):
 
         await asyncio.sleep(sleep_time_between_actions * multi)
         del multi
+
 
     await asyncio.sleep(500000)
 
