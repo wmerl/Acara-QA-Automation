@@ -87,6 +87,20 @@ class Xpath(object):
     BY_ORDER_TYPE_BTN_XPATH: str = '//html/body/flutter-view/flt-semantics-host/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[3]/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[3]/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[1]'
     # endregion
 
+    # region Purchase Page Elements Xpaths
+    PAGINATION_BTN_XPATH: str = '//html/body/flutter-view/flt-semantics-host/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[6]/flt-semantics-container/flt-semantics[12]/flt-semantics-container/flt-semantics[1]'
+    EVENT_SECTION_XPATH: str = '//html/body/flutter-view/flt-semantics-host/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[6]/flt-semantics-container/flt-semantics[11]/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics'
+    TICKET_ELEMENT_XPATH: str = '//html/body/flutter-view/flt-semantics-host/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[1]/flt-semantics-container/flt-semantics[6]/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[1]/flt-semantics-container/flt-semantics'
+    ADD_TIER_BTN_XPATH: str = '//html/body/flutter-view/flt-semantics-host/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[3]/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[1]/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[2]'
+    CHECKOUT_PURCHASE_BTN_XPATH: str = '//html/body/flutter-view/flt-semantics-host/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[6]'
+    PAY_BTN_XPATH: str = '//*[@id="root"]/div/div[2]/div[2]/main/div/div[2]/form/div[1]/div/div/div[3]/div/div[2]/button/div[3]'
+    # endregion
+
+    # region After Sell Page Elements Xpath
+    DOWNLOAD_QR_BTN_XPATH: str = '//html/body/flutter-view/flt-semantics-host/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[3]'
+    # endregion
+
+
 class Link(object):
     MAIN_LINK: str = 'https://acara-landing.web.app/#'
 
@@ -96,18 +110,32 @@ class Link(object):
 
 class ID(object):
 
-    # Home Page Elements IDs
+    # region Home Page Elements IDs
     HOME_HEADER_BTN_ID: str = '#flt-semantic-node-23'
     MY_EVENTS_HEADER_BTN_ID: str = '#flt-semantic-node-24'
     NEAR_BY_ME_HEADER_BTN_ID: str = '#flt-semantic-node-25'
     CALENDAR_HEADER_BTN_ID: str = '#flt-semantic-node-26'
     SETTINGS_HEADER_BTN_ID: str = '#flt-semantic-node-27'
+    # endregion
 
-    # Dashboard Page Elements IDs
+    # region Dashboard Page Elements IDs
     NEW_EVENT_BTN_ID: str = '#flt-semantic-node-240'
+    # endregion
+
+    # region Checkout Page Elements Xpaths
+    CC_NUMBER_INPUT_ID: str = '#cardNumber'
+    EXPIRY_INPUT_ID: str = '#cardExpiry'
+    CVC_INPUT_ID: str = '#cardCvc'
+    NAME_INPUT_ID: str = '#billingName'
+    # endregion
 
 
 class Credentials(object):
 
     EMAIL: str = 'touchdream0609@gmail.com'
     PASSWORD: str = '123123'
+
+    CC_NUMBER: str = '42' * 8
+    EXPIRY_DAT: str = '02/27'
+    CVC_NUMBER: str = '406'
+    CC_CARD_NAME: str = 'Test Name'

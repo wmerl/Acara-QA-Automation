@@ -386,3 +386,68 @@ async def add_new_event(page: Page):
 
     await asyncio.sleep(500000)
 
+
+async def buy_a_tickets(page: Page):
+
+    PURCHASE_XPATHS: list[str] = [
+        Xpath.PAGINATION_BTN_XPATH,
+        Xpath.EVENT_SECTION_XPATH,
+        Xpath.TICKET_ELEMENT_XPATH,
+        Xpath.ADD_TIER_BTN_XPATH,
+        Xpath.CHECKOUT_PURCHASE_BTN_XPATH,
+    ]
+
+    for xpath in PURCHASE_XPATHS:
+
+        if xpath == Xpath.ADD_TIER_BTN_XPATH:
+            purchase_times: int = random.randint(1, 5)
+
+            for _ in range(purchase_times):
+
+                await page.wait_for_selector(xpath)
+                await page.click(xpath)
+                await asyncio.sleep(0.5)
+
+            continue
+
+        await asyncio.sleep(1)
+        await page.wait_for_selector(xpath)
+        await page.click(xpath)
+
+    CC_XPATHS_VALUES: list[dict[str: str]] = [
+        {
+            'xpath': ID.CC_NUMBER_INPUT_ID,
+            'value': Credentials.CC_NUMBER,
+        },
+        {
+            'xpath': ID.EXPIRY_INPUT_ID,
+            'value': Credentials.EXPIRY_DAT,
+        },
+        {
+            'xpath': ID.CVC_INPUT_ID,
+            'value': Credentials.CVC_NUMBER,
+        },
+        {
+            'xpath': ID.NAME_INPUT_ID,
+            'value': Credentials.CC_CARD_NAME,
+        },
+
+    ]
+
+    await page.wait_for_selector(ID.CC_NUMBER_INPUT_ID)
+    await asyncio.sleep(1)
+
+    # Filling CC inputs
+    for xpath_value in CC_XPATHS_VALUES:
+
+        xpath = xpath_value.get('xpath')
+        value = xpath_value.get('value')
+
+        await page.fill(xpath, value, force=True)
+        await asyncio.sleep(1)
+
+    # Clicking Pay BTN
+    await page.click(Xpath.PAY_BTN_XPATH, force=True)
+
+
+
