@@ -1,9 +1,10 @@
 import asyncio
 
 from colorama import init
-from playwright.async_api import async_playwright, Playwright, ViewportSize
+from playwright.async_api import async_playwright, Playwright, ViewportSize, Position
 from consts import Xpath, Link, ID
-from helpers.browser_automation_helpers import sign_in, test_header_buttons_elements, add_new_event, buy_a_tickets
+from helpers.browser_automation_helpers import sign_in, test_header_buttons_elements, add_new_event, buy_a_tickets, \
+    check_reports
 from colorama import Fore, Back, Style
 
 init()
@@ -39,56 +40,44 @@ async def run(playwright: Playwright):
 
     # await buy_a_tickets(page)
 
+    # await check_reports(page)
+
     await page.goto(Link.DASHBOARD_LINK, wait_until='load')
 
-    await asyncio.sleep(2)
     await page.wait_for_selector(Xpath.EVENTS_BTN_XPATH)
-    await asyncio.sleep(1)
     await page.click(Xpath.EVENTS_BTN_XPATH)
 
-    await asyncio.sleep(2)
     await page.wait_for_selector(Xpath.EVENTS_REPORTS_BTN_XPATH)
-    await asyncio.sleep(1)
     await page.click(Xpath.EVENTS_REPORTS_BTN_XPATH)
 
-    FINANCIAL_XPATHS: list[str] = [
-        Xpath.FINANCES_BY_DATE_BTN_XPATH,
-        Xpath.FINANCES_BY_TICKET_BTN_XPATH,
-        Xpath.SALES_BY_EVENT_BTN_XPATH,
-        Xpath.SALES_BY_DATE_BTN_XPATH,
-        Xpath.SALES_BY_TICKET_BTN_XPATH,
-        Xpath.SALES_BY_TIER_BTN_XPATH,
-    ]
+    await page.wait_for_selector(Xpath.ANALYTICS_DROP_DOWN_XPATH)
+    await page.click(Xpath.ANALYTICS_DROP_DOWN_XPATH)
 
-    for xpath in FINANCIAL_XPATHS:
+    await page.wait_for_selector(Xpath.CHARTS_BTN_XPATH)
+    await page.click(Xpath.CHARTS_BTN_XPATH)
 
-        await page.wait_for_selector(xpath)
-        await asyncio.sleep(1)
-        await page.click(xpath)
-        await asyncio.sleep(1)
+    await asyncio.sleep(3)
 
-        row_1 = await page.query_selector(Xpath.ROW_TOGGLE_XPATH.format(1))
-        if row_1:
+    chart = page.locator(Xpath.CHART_SECTION_XPATH)
 
-            for i in range(1, 4):
-                xpath: str = Xpath.ROW_TOGGLE_XPATH.format(i)
-                row_x = await page.query_selector(xpath)
+    box = await chart.bounding_box()
 
-                if row_x:
+    height: int = int(box.get('height', 0))
+    width: int = int(box.get('width', 0))
 
-                    for _ in range(2):
+    for i in range(10, (width//2), 5):
 
-                        await page.wait_for_selector(xpath)
+        await chart.hover(
+            position=
+                {
+                    'x': 100 + i,
+                    'y': height - 60,
+                },
+            force=True
+            )
 
-                        await asyncio.sleep(2)
-                        await page.click(xpath, force=True)
-                        await asyncio.sleep(1)
-                else:
-                    break
-
-
-
-
+        await asyncio.sleep(0.25)
+        print('ok', i // 5)
 
     await asyncio.sleep(50000)
 
