@@ -37,16 +37,60 @@ async def run(playwright: Playwright):
 
     # await add_new_event(page)
 
-    await buy_a_tickets(page)
+    # await buy_a_tickets(page)
+
+    await page.goto(Link.DASHBOARD_LINK, wait_until='load')
+
+    await asyncio.sleep(2)
+    await page.wait_for_selector(Xpath.EVENTS_BTN_XPATH)
+    await asyncio.sleep(1)
+    await page.click(Xpath.EVENTS_BTN_XPATH)
+
+    await asyncio.sleep(2)
+    await page.wait_for_selector(Xpath.EVENTS_REPORTS_BTN_XPATH)
+    await asyncio.sleep(1)
+    await page.click(Xpath.EVENTS_REPORTS_BTN_XPATH)
+
+    FINANCIAL_XPATHS: list[str] = [
+        Xpath.FINANCES_BY_DATE_BTN_XPATH,
+        Xpath.FINANCES_BY_TICKET_BTN_XPATH,
+        Xpath.SALES_BY_EVENT_BTN_XPATH,
+        Xpath.SALES_BY_DATE_BTN_XPATH,
+        Xpath.SALES_BY_TICKET_BTN_XPATH,
+        Xpath.SALES_BY_TIER_BTN_XPATH,
+    ]
+
+    for xpath in FINANCIAL_XPATHS:
+
+        await page.wait_for_selector(xpath)
+        await asyncio.sleep(1)
+        await page.click(xpath)
+        await asyncio.sleep(1)
+
+        row_1 = await page.query_selector(Xpath.ROW_TOGGLE_XPATH.format(1))
+        if row_1:
+
+            for i in range(1, 4):
+                xpath: str = Xpath.ROW_TOGGLE_XPATH.format(i)
+                row_x = await page.query_selector(xpath)
+
+                if row_x:
+
+                    for _ in range(2):
+
+                        await page.wait_for_selector(xpath)
+
+                        await asyncio.sleep(2)
+                        await page.click(xpath, force=True)
+                        await asyncio.sleep(1)
+                else:
+                    break
+
+
+
+
 
     await asyncio.sleep(50000)
-
-
-
-
-
-
-
 
     # Adding new event
 
