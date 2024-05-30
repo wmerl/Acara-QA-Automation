@@ -1,7 +1,7 @@
 import asyncio
 import random
 
-from playwright.async_api import Page, Position
+from playwright.async_api import Page, Position, Locator
 
 from consts import Link, Xpath, ID, Credentials
 
@@ -491,5 +491,67 @@ async def check_reports(page: Page):
                         await asyncio.sleep(1)
                 else:
                     break
+
+
+async def check_charts(page: Page):
+    await page.goto(Link.DASHBOARD_LINK, wait_until='load')
+
+    header_btn_xpaths: list[str] = [
+        Xpath.ISSUED_BTN_XPATH,
+        Xpath.CUMULATIVE_COUNT_BTN_XPATH,
+        Xpath.ISSUED_BEFORE_START_DATE_BTN_XPATH,
+        Xpath.TICKET_NET_SALES_BTN_XPATH,
+        Xpath.CUMULTATIVE_COUNT_BTN_XPATH,
+        Xpath.BEFORE_START_SATE_BTN_XPATH,
+    ]
+    navigating_xpaths: list[str] = [
+        Xpath.EVENTS_BTN_XPATH,
+        Xpath.EVENTS_REPORTS_BTN_XPATH,
+        Xpath.ANALYTICS_DROP_DOWN_XPATH,
+        Xpath.CHARTS_BTN_XPATH,
+    ]
+
+    # Navigating to Charts
+    for xpath in navigating_xpaths:
+
+        await page.wait_for_selector(xpath)
+        await page.click(xpath)
+
+    await asyncio.sleep(3)
+
+    # Navigating to each chart
+    for xpath in header_btn_xpaths:
+
+        await page.wait_for_selector(xpath)
+        await page.click(xpath)
+        await asyncio.sleep(1)
+
+        chart: Locator = page.locator(Xpath.CHART_SECTION_XPATH)
+        await check_chart_line(chart)
+
+
+async def check_chart_line(chart: Locator):
+
+    box = await chart.bounding_box()
+
+    height: int = int(box.get('height', 0))
+    width: int = int(box.get('width', 0))
+
+    for i in range(10, (width // 4), 5):
+
+        try:
+            await chart.hover(
+                position=
+                {
+                    'x': 100 + i,
+                    'y': height - 45,
+                },
+                force=True
+            )
+        except:
+            pass
+
+        await asyncio.sleep(0.25)
+        print('ok', i // 5)
 
 
