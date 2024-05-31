@@ -517,56 +517,47 @@ async def check_charts(page: Page):
     ]
 
 
-    # Navigating to Charts
+    # Navigating to Charts Page
     for xpath in NAVIGATING_XPATHS:
 
         await page.wait_for_selector(xpath)
         await page.click(xpath)
 
-
+    # Window Size
     # 1280 x 720
 
-    await asyncio.sleep(3)
-
-    await page.mouse.move(x=200, y=720//2)
+    await page.wait_for_selector(Xpath.ISSUED_BTN_XPATH)
     await asyncio.sleep(0.5)
-    await page.mouse.wheel(delta_x=0, delta_y=800)
-    await asyncio.sleep(1)
 
-    print('OK')
-
-    for xpath in CYCLE_CHARTS_XPATHS:
-
-        await page.wait_for_selector(xpath)
-        await page.click(xpath)
-        await asyncio.sleep(1)
-
-        lists = [
-            650,
-            960
-        ]
-
-        for x in lists:
-            for y in range(50, 501, 100):
-
-                await page.mouse.move(x=x, y=(400+y)//2)
-                print((720+y)//2)
-                await asyncio.sleep(1)
-
-
-
-    print('Sleeping..')
-    await asyncio.sleep(5000)
-
-    # Navigating to each chart
+    # Navigating to each Line chart
     for xpath in HEADER_BTN_XPATHS:
-
         await page.wait_for_selector(xpath)
         await page.click(xpath)
         await asyncio.sleep(1)
 
         chart: Locator = page.locator(Xpath.CHART_SECTION_XPATH)
         await check_chart_line(chart)
+
+
+    # Scroll Down to Cycle Charts
+    await page.mouse.move(x=200, y=720//2)
+    await asyncio.sleep(0.5)
+    await page.mouse.wheel(delta_x=0, delta_y=800)
+    await asyncio.sleep(1)
+
+    # Check Each Cycle Chart
+    for xpath in CYCLE_CHARTS_XPATHS:
+
+        await page.wait_for_selector(xpath)
+        await page.click(xpath)
+        await asyncio.sleep(1)
+
+        await check_cycle_chart(page)
+
+    print('Sleeping..')
+    await asyncio.sleep(5000)
+
+
 
 
 async def check_chart_line(chart: Locator):
@@ -592,5 +583,20 @@ async def check_chart_line(chart: Locator):
 
         await asyncio.sleep(0.25)
         print('ok', i // 5)
+
+
+async def check_cycle_chart(page: Page):
+    x_coordinates: list[int] = [
+        650,
+        960
+    ]
+
+    y_coordinates: range = range(50, 501, 100)
+
+    for x in x_coordinates:
+        for y in y_coordinates:
+            await page.mouse.move(x=x, y=(400 + y) // 2)
+            print((720 + y) // 2)
+            await asyncio.sleep(1)
 
 
