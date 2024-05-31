@@ -40,6 +40,8 @@ async def run(playwright: Playwright):
 
     # await check_reports(page)
 
+    # //html/body/flutter-view
+
     await check_charts(page)
 
     await asyncio.sleep(50000)

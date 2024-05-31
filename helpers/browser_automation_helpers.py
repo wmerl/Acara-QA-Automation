@@ -496,7 +496,13 @@ async def check_reports(page: Page):
 async def check_charts(page: Page):
     await page.goto(Link.DASHBOARD_LINK, wait_until='load')
 
-    header_btn_xpaths: list[str] = [
+    NAVIGATING_XPATHS: list[str] = [
+        Xpath.EVENTS_BTN_XPATH,
+        Xpath.EVENTS_REPORTS_BTN_XPATH,
+        Xpath.ANALYTICS_DROP_DOWN_XPATH,
+        Xpath.CHARTS_BTN_XPATH,
+    ]
+    HEADER_BTN_XPATHS: list[str] = [
         Xpath.ISSUED_BTN_XPATH,
         Xpath.CUMULATIVE_COUNT_BTN_XPATH,
         Xpath.ISSUED_BEFORE_START_DATE_BTN_XPATH,
@@ -504,23 +510,56 @@ async def check_charts(page: Page):
         Xpath.CUMULTATIVE_COUNT_BTN_XPATH,
         Xpath.BEFORE_START_SATE_BTN_XPATH,
     ]
-    navigating_xpaths: list[str] = [
-        Xpath.EVENTS_BTN_XPATH,
-        Xpath.EVENTS_REPORTS_BTN_XPATH,
-        Xpath.ANALYTICS_DROP_DOWN_XPATH,
-        Xpath.CHARTS_BTN_XPATH,
+    CYCLE_CHARTS_XPATHS: list[str] = [
+        Xpath.BY_AGE_BTN_XPATH,
+        Xpath.BY_DEVICE_BTN_XPATH,
+        Xpath.BY_GENDER_BTN_XPATH,
     ]
 
+
     # Navigating to Charts
-    for xpath in navigating_xpaths:
+    for xpath in NAVIGATING_XPATHS:
 
         await page.wait_for_selector(xpath)
         await page.click(xpath)
 
+
+    # 1280 x 720
+
     await asyncio.sleep(3)
 
+    await page.mouse.move(x=200, y=720//2)
+    await asyncio.sleep(0.5)
+    await page.mouse.wheel(delta_x=0, delta_y=800)
+    await asyncio.sleep(1)
+
+    print('OK')
+
+    for xpath in CYCLE_CHARTS_XPATHS:
+
+        await page.wait_for_selector(xpath)
+        await page.click(xpath)
+        await asyncio.sleep(1)
+
+        lists = [
+            650,
+            960
+        ]
+
+        for x in lists:
+            for y in range(50, 501, 100):
+
+                await page.mouse.move(x=x, y=(400+y)//2)
+                print((720+y)//2)
+                await asyncio.sleep(1)
+
+
+
+    print('Sleeping..')
+    await asyncio.sleep(5000)
+
     # Navigating to each chart
-    for xpath in header_btn_xpaths:
+    for xpath in HEADER_BTN_XPATHS:
 
         await page.wait_for_selector(xpath)
         await page.click(xpath)
