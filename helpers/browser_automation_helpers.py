@@ -211,7 +211,6 @@ async def add_new_event(page: Page):
     TIERS_MAPS: list[str] = [
         Xpath.TIERS_BTN_XPATH,
         Xpath.ADD_FIRST_TIER_BTN_XPATH,
-        Xpath.INVENTORY_CHECKBOX_XPATH,
     ]
     TIERS_XPATH_VALUES: list[dict[str: str]] = [
         {
@@ -331,7 +330,8 @@ async def add_new_event(page: Page):
     file_chooser = await fc_info.value
     await asyncio.sleep(sleep_time_between_actions)
 
-    temporary_file_path: str = r"C:\Users\Administrator\Downloads\pexels-samaraagenstvo-feeria-2399097.jpg"
+    # temporary_file_path: str = r"C:\Users\Administrator\Downloads\pexels-samaraagenstvo-feeria-2399097.jpg"
+    temporary_file_path: str = r"C:\Users\Mohammed\Downloads\image-1-1651856047.jpg"
     await file_chooser.set_files(temporary_file_path)
 
 
@@ -364,27 +364,39 @@ async def add_new_event(page: Page):
         await page.fill(xpath, value, force=True, no_wait_after=False)
         await asyncio.sleep(sleep_time_between_actions)
 
+    await page.click(
+        Xpath.INVENTORY_CHECKBOX_XPATH,
+        force=True,
+        no_wait_after=False
+    )
+    await asyncio.sleep(sleep_time_between_actions*2)
 
     PUBLISHING_XPATHS: list[str] = [
-        Xpath.APPLY_TIER_BTN_1_XPATH,
         Xpath.APPLY_TIER_BTN_2_XPATH,
         Xpath.PUBLISH_BTN_XPATH,
     ]
 
+
     for i, publishing_xpath in enumerate(PUBLISHING_XPATHS, start=1):
+        multi = 10
+
+        # Clicked on Apply Tier Btn 1
+        if i == 1:
+            apply_btn = page.get_by_role('button')
+            await apply_btn.click()
+            print('Clicked', apply_btn)
+            await asyncio.sleep(sleep_time_between_actions * multi)
 
         await page.wait_for_selector(publishing_xpath)
-        await page.click(publishing_xpath, force=True, no_wait_after=False)
+        await asyncio.sleep(sleep_time_between_actions)
+        await page.click(publishing_xpath, force=True)
+        print('Clicked', publishing_xpath)
 
-        multi = 10
         if i == 3:
             multi = 1
 
         await asyncio.sleep(sleep_time_between_actions * multi)
         del multi
-
-
-    await asyncio.sleep(500000)
 
 
 async def buy_a_tickets(page: Page):
