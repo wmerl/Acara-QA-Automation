@@ -165,11 +165,11 @@ async def add_new_event(page: Page):
     DATE_CHOOSERS: list[dict[str: str]] = [
         {
             'xpath': Xpath.EVENT_START_DATE_CHOOSER_XPATH,
-            'value': '06/01/2024'
+            'value': '06/10/2024'
         },
         {
             'xpath': Xpath.EVENT_END_DATE_CHOOSER_XPATH,
-            'value': '05/29/2024'
+            'value': '06/29/2024'
         },
     ]
     TIME_CHOOSERS: list[dict[str: str]] = [
@@ -331,7 +331,7 @@ async def add_new_event(page: Page):
     file_chooser = await fc_info.value
     await asyncio.sleep(sleep_time_between_actions)
 
-    temporary_file_path: str = r"C:\Users\Mohammed\Downloads\image-1-1651856047.jpg"
+    temporary_file_path: str = r"C:\Users\Administrator\Downloads\pexels-samaraagenstvo-feeria-2399097.jpg"
     await file_chooser.set_files(temporary_file_path)
 
 
@@ -410,7 +410,7 @@ async def buy_a_tickets(page: Page):
 
             continue
 
-        await asyncio.sleep(1)
+        await asyncio.sleep(5)
         await page.wait_for_selector(xpath)
         await page.click(xpath)
 
@@ -431,9 +431,19 @@ async def buy_a_tickets(page: Page):
             'xpath': ID.NAME_INPUT_ID,
             'value': Credentials.CC_CARD_NAME,
         },
+        {
+            'xpath': ID.ZIP_CODE_INPUT_ID,
+            'value': Credentials.ZIP_CODE,
+        },
+        {
+            'xpath': ID.PHONE_NUMBER_INPUT_ID,
+            'value': Credentials.PHONE_NUMBER,
+        },
+
 
     ]
 
+    await asyncio.sleep(5)
     await page.wait_for_selector(ID.CC_NUMBER_INPUT_ID)
     await asyncio.sleep(1)
 
@@ -521,6 +531,7 @@ async def check_charts(page: Page):
     for xpath in NAVIGATING_XPATHS:
 
         await page.wait_for_selector(xpath)
+        await asyncio.sleep(5)
         await page.click(xpath)
 
     # Window Size

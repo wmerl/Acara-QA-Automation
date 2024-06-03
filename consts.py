@@ -167,6 +167,8 @@ class ID(object):
     EXPIRY_INPUT_ID: str = '#cardExpiry'
     CVC_INPUT_ID: str = '#cardCvc'
     NAME_INPUT_ID: str = '#billingName'
+    ZIP_CODE_INPUT_ID: str = '#billingPostalCode'
+    PHONE_NUMBER_INPUT_ID: str = '#phoneNumber'
     # endregion
 
 
@@ -179,3 +181,5 @@ class Credentials(object):
     EXPIRY_DAT: str = '02/27'
     CVC_NUMBER: str = '406'
     CC_CARD_NAME: str = 'Test Name'
+    ZIP_CODE: str = '11000'
+    PHONE_NUMBER: str = '+17533154100'
