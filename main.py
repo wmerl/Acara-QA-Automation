@@ -36,13 +36,15 @@ async def run(playwright: Playwright):
 
     # await add_new_event(page)
 
-    # await buy_a_tickets(page)
+    await buy_a_tickets(page)
+
+    await asyncio.sleep(50000)
 
     # await check_reports(page)
 
     # //html/body/flutter-view
 
-    await check_charts(page)
+    # await check_charts(page)
 
     await asyncio.sleep(50000)
 

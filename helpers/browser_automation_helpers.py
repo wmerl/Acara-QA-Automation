@@ -453,11 +453,35 @@ async def buy_a_tickets(page: Page):
         xpath = xpath_value.get('xpath')
         value = xpath_value.get('value')
 
-        await page.fill(xpath, value, force=True)
-        await asyncio.sleep(1)
+        locator: Locator = page.locator(xpath)
+
+        if await locator.count() > 0:
+            await page.fill(xpath, value, force=True)
+            await asyncio.sleep(1)
+
+            del locator
 
     # Clicking Pay BTN
     await page.click(Xpath.PAY_BTN_XPATH, force=True)
+
+    # Window Size
+    # 1280 x 720
+
+    await page.wait_for_selector(
+        Xpath.DOWNLOAD_QR_BTN_XPATH,
+        timeout=40_000
+        )
+    await asyncio.sleep(2)
+
+    await slide_tickets_to_left(page)
+    print('Done')
+
+    await asyncio.sleep(1)
+
+    # Clicking Download QR Codes
+    await page.click(
+        Xpath.DOWNLOAD_QR_BTN_XPATH,
+    )
 
 
 async def check_reports(page: Page):
@@ -569,8 +593,6 @@ async def check_charts(page: Page):
     await asyncio.sleep(5000)
 
 
-
-
 async def check_chart_line(chart: Locator):
 
     box = await chart.bounding_box()
@@ -609,5 +631,27 @@ async def check_cycle_chart(page: Page):
             await page.mouse.move(x=x, y=(400 + y) // 2)
             print((720 + y) // 2)
             await asyncio.sleep(1)
+
+
+async def slide_tickets_to_left(page: Page):
+
+    sleep_time_outs: float = 0.2
+
+    y: int = 500
+    # Click on the Ticket
+
+    await page.mouse.move(x=700, y=y)
+    await asyncio.sleep(sleep_time_outs)
+
+    await page.mouse.down()
+    await asyncio.sleep(sleep_time_outs)
+
+    # Slide the Tickets to Left
+    for x in range(699, 50, -10):
+        await page.mouse.move(x=x, y=y)
+        await asyncio.sleep(0.01)
+
+    await page.mouse.up()
+    await asyncio.sleep(sleep_time_outs)
 
 
