@@ -415,6 +415,11 @@ async def add_new_event(page: Page):
 
 async def buy_a_tickets(page: Page):
 
+    current_url: str = page.url
+
+    if current_url != Link.MAIN_LINK:
+        await page.click(ID.HOME_HEADER_BTN_ID)
+
     PURCHASE_XPATHS: list[str] = [
         Xpath.PAGINATION_BTN_XPATH,
         Xpath.EVENT_SECTION_XPATH,
@@ -470,6 +475,18 @@ async def buy_a_tickets(page: Page):
     ]
 
     await asyncio.sleep(5)
+
+    PAY_WITHOUT_LINK_BTN = None
+
+    try:
+        PAY_WITHOUT_LINK_BTN = page.get_by_text('Pay Without Link')
+    except:
+        pass
+
+    if PAY_WITHOUT_LINK_BTN and await PAY_WITHOUT_LINK_BTN.count() > 0:
+        await PAY_WITHOUT_LINK_BTN.click()
+        await asyncio.sleep(1)
+
     await page.wait_for_selector(ID.CC_NUMBER_INPUT_ID)
     await asyncio.sleep(1)
 
