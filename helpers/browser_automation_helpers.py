@@ -111,6 +111,7 @@ async def test_header_buttons_elements(page: Page):
 
 async def add_new_event(page: Page):
     sleep_time_between_actions: int = 1
+    sleep_time_multiplication: int = 3
 
     # Calculate dynamic dates
     current_date: datetime = datetime.now()
@@ -238,12 +239,12 @@ async def add_new_event(page: Page):
     await page.goto(Link.DASHBOARD_LINK, wait_until='load')
 
     await page.wait_for_selector(Xpath.NEW_EVENT_BTN_XPATH)
-    await asyncio.sleep(1)
+    await asyncio.sleep(sleep_time_between_actions * sleep_time_multiplication)
 
     await page.click(Xpath.NEW_EVENT_BTN_XPATH)
 
     await page.wait_for_selector(Xpath.EVENT_TITLE_INPUT_XPATH)
-    await asyncio.sleep(sleep_time_between_actions)
+    await asyncio.sleep(sleep_time_between_actions * sleep_time_multiplication)
 
     # Filling the Text Inputs
     for input in TEXT_INPUTS:
