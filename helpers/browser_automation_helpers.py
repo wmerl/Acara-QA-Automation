@@ -351,6 +351,14 @@ async def add_new_event(page: Page):
         xpath: str = tickets.get('xpath')
         value: str = tickets.get('value')
 
+        # Scroll Down to NUMBER_OF_TICKETS_INPUT_XPATH
+        if xpath == Xpath.NUMBER_OF_TICKETS_INPUT_XPATH:
+
+            await page.mouse.move(x=800, y=720 // 2)
+            await asyncio.sleep(0.5)
+            await page.mouse.wheel(delta_x=0, delta_y=500)
+            await asyncio.sleep(1)
+
         await page.click(xpath, force=True, no_wait_after=False)
         await page.fill(xpath, value, force=True, no_wait_after=False)
         await asyncio.sleep(sleep_time_between_actions)
@@ -382,9 +390,8 @@ async def add_new_event(page: Page):
         Xpath.PUBLISH_BTN_XPATH,
     ]
 
-
     for i, publishing_xpath in enumerate(PUBLISHING_XPATHS, start=1):
-        multi = 10
+        multi = 7
 
         # Clicked on Apply Tier Btn 1
         if i == 1:
