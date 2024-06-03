@@ -34,11 +34,9 @@ async def run(playwright: Playwright):
 
     # await test_header_buttons_elements(page)
 
-    # await add_new_event(page)
-
-    await buy_a_tickets(page)
-
-    await asyncio.sleep(50000)
+    await add_new_event(page)
+    
+    # await buy_a_tickets(page)
 
     # await check_reports(page)
 

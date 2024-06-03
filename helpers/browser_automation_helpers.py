@@ -216,7 +216,7 @@ async def add_new_event(page: Page):
     TIERS_XPATH_VALUES: list[dict[str: str]] = [
         {
             'xpath': Xpath.TIER_NAME_INPUT_XPATH,
-            'value': '20',
+            'value': f'Tier {random.randint(1, 10)}',
         },
         {
             'xpath': Xpath.BASE_PRICE_TIER_INPUT_XPATH,
