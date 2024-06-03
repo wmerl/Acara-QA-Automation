@@ -32,15 +32,18 @@ async def run(playwright: Playwright):
 
     await sign_in(page)
 
-    await test_header_buttons_elements(page)
+    # await test_header_buttons_elements(page)
 
-    # await add_new_event(page)
+    await add_new_event(page)
     
-    await buy_a_tickets(page)
+    # await buy_a_tickets(page)
+    # await asyncio.sleep(1)
 
-    await check_reports(page)
+    # await check_reports(page)
+    # await asyncio.sleep(1)
 
-    await check_charts(page)
+    # await check_charts(page)
+    # await asyncio.sleep(1)
 
     await asyncio.sleep(50000)
 
