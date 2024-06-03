@@ -9,6 +9,8 @@ from colorama import init
 from colorama import Fore, Back, Style
 init()
 
+from datetime import datetime, timedelta
+
 
 async def sign_in(page: Page):
 
@@ -110,6 +112,11 @@ async def test_header_buttons_elements(page: Page):
 async def add_new_event(page: Page):
     sleep_time_between_actions: int = 1
 
+    # Calculate dynamic dates
+    current_date: datetime = datetime.now()
+    start_date: str = (current_date + timedelta(days=7)).strftime('%m/%d/%Y')
+    end_date: str = (current_date + timedelta(days=26)).strftime('%m/%d/%Y')
+
     TEXT_INPUTS: list[dict[str: str]] = [
         {
             'xpath': Xpath.EVENT_TITLE_INPUT_XPATH,
@@ -165,11 +172,11 @@ async def add_new_event(page: Page):
     DATE_CHOOSERS: list[dict[str: str]] = [
         {
             'xpath': Xpath.EVENT_START_DATE_CHOOSER_XPATH,
-            'value': '06/10/2024'
+            'value': start_date
         },
         {
             'xpath': Xpath.EVENT_END_DATE_CHOOSER_XPATH,
-            'value': '06/29/2024'
+            'value': end_date
         },
     ]
     TIME_CHOOSERS: list[dict[str: str]] = [
@@ -333,7 +340,6 @@ async def add_new_event(page: Page):
     # temporary_file_path: str = r"C:\Users\Administrator\Downloads\pexels-samaraagenstvo-feeria-2399097.jpg"
     temporary_file_path: str = r"C:\Users\Mohammed\Downloads\image-1-1651856047.jpg"
     await file_chooser.set_files(temporary_file_path)
-
 
     # Navigating to Tickets
     for tickets_map in TICKETS_MAPS:
