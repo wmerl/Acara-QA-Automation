@@ -4,9 +4,17 @@ class Xpath(object):
 
     # region Sign In Page Elements Xpaths
     input_xpath = '//html/body/flutter-view/flt-semantics-host/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[{}]/input'
-    EMAIL_INPUT_XPATH: str = input_xpath.format(5)
-    PASSWORD_INPUT_XPATH: str = input_xpath.format(8)
+    EMAIL_SIGN_IN_INPUT_XPATH: str = input_xpath.format(5)
+    PASSWORD_SIGN_IN_INPUT_XPATH: str = input_xpath.format(8)
     LOGIN_BTN_XPATH: str = input_xpath.format(9).replace('/input', '')
+    # endregion
+
+    # region Sign Up Page Elements Xpaths
+    FIRST_NAME_SIGN_UP_INPUT_XPATH: str = input_xpath.format(5)
+    LAST_NAME_SIGN_UP_INPUT_XPATH: str = input_xpath.format(8)
+    EMAIL_SIGN_UP_INPUT_XPATH: str = input_xpath.format(11)
+    PASSWORD_SIGN_UP_INPUT_XPATH: str = input_xpath.format(14)
+    SIGN_UP_BTN_XPATH: str = input_xpath.format(15).replace('/input', '')
     del input_xpath
     # endregion
 
@@ -158,6 +166,7 @@ class Link(object):
     MAIN_LINK: str = 'https://acara-landing.web.app/#'
 
     SIGN_IN_LINK: str = f'{MAIN_LINK}/signin'
+    SIGN_UP_LINK: str = f'{MAIN_LINK}/signup'
     DASHBOARD_LINK: str = f'{MAIN_LINK}/dashboard'
 
 
@@ -187,12 +196,20 @@ class ID(object):
 
 class Credentials(object):
 
+    # Sign In Account Cred
     EMAIL: str = 'touchdream0609@gmail.com'
     PASSWORD: str = '123123'
 
+    # Credit Card Info
     CC_NUMBER: str = '42' * 8
     EXPIRY_DAT: str = '02/27'
     CVC_NUMBER: str = '406'
     CC_CARD_NAME: str = 'Test Name'
     ZIP_CODE: str = '11000'
     PHONE_NUMBER: str = '+17533154100'
+
+    # Sign Up Info
+    FIRST_NAME: str = 'First Name'
+    LAST_NAME: str = 'Last Name'
+    TEST_EMAIL: str = 'example.email@gmail.com'
+    TEST_PASSWORD: str = 'this_is_a_password_001'

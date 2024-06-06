@@ -24,8 +24,8 @@ async def sign_in(page: Page):
     # Checking Email Input
     print(' Email input', end=' ')
     try:
-        await page.wait_for_selector(Xpath.EMAIL_INPUT_XPATH)
-        email_input = await page.query_selector(Xpath.EMAIL_INPUT_XPATH)
+        await page.wait_for_selector(Xpath.EMAIL_SIGN_IN_INPUT_XPATH)
+        email_input = await page.query_selector(Xpath.EMAIL_SIGN_IN_INPUT_XPATH)
 
         if email_input:
             print('found')
@@ -38,8 +38,8 @@ async def sign_in(page: Page):
     # Checking Password Input
     print(' Password input', end=' ')
     try:
-        await page.wait_for_selector(Xpath.PASSWORD_INPUT_XPATH)
-        password_input = await page.query_selector(Xpath.PASSWORD_INPUT_XPATH)
+        await page.wait_for_selector(Xpath.PASSWORD_SIGN_IN_INPUT_XPATH)
+        password_input = await page.query_selector(Xpath.PASSWORD_SIGN_IN_INPUT_XPATH)
 
         if password_input:
             print('found')
@@ -61,12 +61,12 @@ async def sign_in(page: Page):
     except:
         print('not found')
 
-    await page.fill(Xpath.EMAIL_INPUT_XPATH, Credentials.EMAIL, force=True)
+    await page.fill(Xpath.EMAIL_SIGN_IN_INPUT_XPATH, Credentials.EMAIL, force=True)
 
     await asyncio.sleep(.5)
 
-    await page.click(Xpath.PASSWORD_INPUT_XPATH, force=True, no_wait_after=True)
-    await page.fill(Xpath.PASSWORD_INPUT_XPATH, Credentials.PASSWORD, force=True, no_wait_after=False)
+    await page.click(Xpath.PASSWORD_SIGN_IN_INPUT_XPATH, force=True, no_wait_after=True)
+    await page.fill(Xpath.PASSWORD_SIGN_IN_INPUT_XPATH, Credentials.PASSWORD, force=True, no_wait_after=False)
 
     await asyncio.sleep(.5)
 
@@ -86,6 +86,47 @@ async def sign_in(page: Page):
             print('Failed')
     except:
         print('Failed')
+
+
+async def sign_up(page: Page):
+
+    await page.goto(Link.SIGN_UP_LINK, wait_until='load')
+    sleep_time_between_actions: int = 1
+
+    TEXT_INPUTS: list[dict[str: str]] = [
+        {
+            'xpath': Xpath.FIRST_NAME_SIGN_UP_INPUT_XPATH,
+            'value': Credentials.FIRST_NAME,
+        },
+        {
+            'xpath': Xpath.LAST_NAME_SIGN_UP_INPUT_XPATH,
+            'value': Credentials.LAST_NAME,
+        },
+        {
+            'xpath': Xpath.EMAIL_SIGN_UP_INPUT_XPATH,
+            'value': Credentials.TEST_EMAIL,
+        },
+        {
+            'xpath': Xpath.PASSWORD_SIGN_UP_INPUT_XPATH,
+            'value': Credentials.TEST_PASSWORD,
+        },
+    ]
+
+    await page.wait_for_selector(Xpath.FIRST_NAME_SIGN_UP_INPUT_XPATH)
+    await asyncio.sleep(sleep_time_between_actions)
+
+    # Filling the Text Inputs
+    for input in TEXT_INPUTS:
+
+        xpath: str = input.get('xpath')
+        value: str = input.get('value')
+
+        await page.focus(xpath)
+        await page.fill(xpath, value, force=True, no_wait_after=False)
+        await asyncio.sleep(sleep_time_between_actions)
+
+    await page.click(Xpath.SIGN_UP_BTN_XPATH)
+
 
 
 async def test_header_buttons_elements(page: Page):

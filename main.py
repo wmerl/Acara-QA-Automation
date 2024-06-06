@@ -4,7 +4,7 @@ from colorama import init
 from playwright.async_api import async_playwright, Playwright, ViewportSize, Position
 from consts import Xpath, Link, ID
 from helpers.browser_automation_helpers import sign_in, test_header_buttons_elements, add_new_event, buy_a_tickets, \
-    check_reports, check_charts, sign_out
+    check_reports, check_charts, sign_out, sign_up
 from colorama import Fore, Back, Style
 
 init()
@@ -27,15 +27,17 @@ async def run(playwright: Playwright):
     page = context.pages[0]
     await asyncio.sleep(0.5)
 
-    # await page.
-
-
     await sign_in(page)
 
-    # await test_header_buttons_elements(page)
+    # await sign_up(page)
+    # await asyncio.sleep(1)
 
-    await add_new_event(page)
-    
+    # await test_header_buttons_elements(page)
+    # await asyncio.sleep(1)
+
+    # await add_new_event(page)
+    # await asyncio.sleep(1)
+
     # await buy_a_tickets(page)
     # await asyncio.sleep(1)
 
