@@ -704,9 +704,6 @@ async def check_charts(page: Page):
 
         await check_cycle_chart(page)
 
-    print('Sleeping..')
-    await asyncio.sleep(5000)
-
 
 async def check_chart_line(chart: Locator):
 
@@ -730,7 +727,7 @@ async def check_chart_line(chart: Locator):
             pass
 
         await asyncio.sleep(0.25)
-        print('ok', i // 5)
+        # print('ok', i // 5)
 
 
 async def check_cycle_chart(page: Page):
@@ -744,7 +741,7 @@ async def check_cycle_chart(page: Page):
     for x in x_coordinates:
         for y in y_coordinates:
             await page.mouse.move(x=x, y=(400 + y) // 2)
-            print((720 + y) // 2)
+            # print((720 + y) // 2)
             await asyncio.sleep(1)
 
 

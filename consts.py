@@ -1,4 +1,15 @@
 
+class AutomationParams(object):
+
+    SIGN_IN: bool = True
+    SIGN_UP: bool = False
+    TEST_HEADER_BUTTONS_ELEMENTS: bool = True
+    ADD_NEW_EVENT: bool = False
+    BUY_A_TICKETS: bool = False
+    CHECK_REPORTS: bool = True
+    CHECK_CHARTS: bool = True
+    SIGN_OUT: bool = True
+    PRINT_REPORTS: bool = True
 
 
 class Xpath(object):

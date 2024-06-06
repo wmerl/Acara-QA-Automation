@@ -14,6 +14,6 @@ def print_reports():
 
         key: str = str(k).replace('_', ' ').capitalize()
         value: str = f'{v:.3f}'
-        text: str = f'{tabs}{key}: {value}s'
+        text: str = f'{tabs}{key}: {value} s'
 
         print(text)

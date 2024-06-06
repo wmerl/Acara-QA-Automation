@@ -4,7 +4,7 @@ import time
 
 from colorama import init
 from playwright.async_api import async_playwright, Playwright, ViewportSize, Position
-from consts import Xpath, Link, ID, Reports
+from consts import Xpath, Link, ID, Reports, AutomationParams
 from helpers.browser_automation_helpers import sign_in, test_header_buttons_elements, add_new_event, buy_a_tickets, \
     check_reports, check_charts, sign_out, sign_up
 from colorama import Fore, Back, Style
@@ -31,33 +31,46 @@ async def run(playwright: Playwright):
     page = context.pages[0]
     await asyncio.sleep(0.5)
 
-    await sign_in(page)
+    # Sign in
+    if AutomationParams.SIGN_IN:
+        await sign_in(page)
 
-    # await sign_up(page)
-    # await asyncio.sleep(1)
+    # Sign UP
+    if AutomationParams.SIGN_UP:
+        await sign_up(page)
 
-    # await test_header_buttons_elements(page)
-    # await asyncio.sleep(1)
+    # Testing Header Elements
+    if AutomationParams.TEST_HEADER_BUTTONS_ELEMENTS:
+        await test_header_buttons_elements(page)
 
-    before = time.time()
-    await add_new_event(page)
-    after_loading = time.time()
-    Reports.TIME_OUTS['add_event_process_timeout'] = after_loading - before
-    await asyncio.sleep(1)
+    # Add New Event
+    if AutomationParams.ADD_NEW_EVENT:
+        before: float = time.time()
 
-    # await buy_a_tickets(page)
-    # await asyncio.sleep(1)
+        await add_new_event(page)
 
-    # await check_reports(page)
-    # await asyncio.sleep(1)
+        after_loading: float = time.time()
+        Reports.TIME_OUTS['add_event_process_timeout'] = after_loading - before
 
-    # await check_charts(page)
-    # await asyncio.sleep(1)
+    # Buy Ticket
+    if AutomationParams.BUY_A_TICKETS:
+        await buy_a_tickets(page)
 
-    # await sign_out(page)
-    # await asyncio.sleep(1)
+    # Check Reports
+    if AutomationParams.CHECK_REPORTS:
+        await check_reports(page)
 
-    print_reports()
+    # Check Charts
+    if AutomationParams.CHECK_CHARTS:
+        await check_charts(page)
+
+    # Sign Out
+    if AutomationParams.SIGN_OUT:
+        await sign_out(page)
+
+    # Print Reports
+    if AutomationParams.PRINT_REPORTS:
+        print_reports()
 
     # await asyncio.sleep(50000)
     await page.close()
