@@ -698,3 +698,21 @@ async def slide_tickets_to_left(page: Page):
     await asyncio.sleep(sleep_time_outs)
 
 
+async def sign_out(page: Page):
+
+    sleep_time_between_actions: int | float = 1/2
+
+    await page.goto(Link.DASHBOARD_LINK, wait_until='load')
+    await page.wait_for_selector(Xpath.ACCOUNT_ICON_BTN_XPATH)
+
+    ELEMENTS_XPATHS: [str] = [
+        Xpath.ACCOUNT_ICON_BTN_XPATH,
+        Xpath.LOG_OUT_BTN_XPATH,
+        Xpath.LOG_OUT_OK_BTN_XPATH
+    ]
+
+    for xpath in ELEMENTS_XPATHS:
+        await page.click(xpath, force=True)
+        await asyncio.sleep(sleep_time_between_actions)
+
+
