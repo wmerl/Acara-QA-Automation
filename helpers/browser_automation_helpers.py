@@ -1,9 +1,10 @@
 import asyncio
 import random
+import time
 
 from playwright.async_api import Page, Position, Locator
 
-from consts import Link, Xpath, ID, Credentials
+from consts import Link, Xpath, ID, Credentials, Reports
 
 from colorama import init
 from colorama import Fore, Back, Style
@@ -14,12 +15,13 @@ from datetime import datetime, timedelta
 
 async def sign_in(page: Page):
 
-
-
     print('Testing sign-in page:')
 
-
+    before = time.time()
     await page.goto(Link.SIGN_IN_LINK, wait_until='load')
+    after_loading = time.time()
+
+    Reports.TIME_OUTS['sign_page_timeout'] = after_loading - before
 
     # Checking Email Input
     print(' Email input', end=' ')
@@ -132,22 +134,33 @@ async def sign_up(page: Page):
 async def test_header_buttons_elements(page: Page):
     sleep_time_between_actions: int = 1
 
+    HEADER_ELEMENTS_XPATHS: list[str] = [
+        ID.HOME_HEADER_BTN_ID,
+        ID.MY_EVENTS_HEADER_BTN_ID,
+        ID.NEAR_BY_ME_HEADER_BTN_ID,
+        ID.CALENDAR_HEADER_BTN_ID,
+        ID.SETTINGS_HEADER_BTN_ID,
+    ]
+
     await page.wait_for_selector(ID.HOME_HEADER_BTN_ID)
     await page.wait_for_selector(ID.MY_EVENTS_HEADER_BTN_ID)
 
-    await page.click(ID.HOME_HEADER_BTN_ID)
-    await asyncio.sleep(sleep_time_between_actions)
+    all_element_exists: bool = True
 
-    await page.click(ID.MY_EVENTS_HEADER_BTN_ID)
-    await asyncio.sleep(sleep_time_between_actions)
+    for xpath in HEADER_ELEMENTS_XPATHS:
 
-    await page.click(ID.NEAR_BY_ME_HEADER_BTN_ID)
-    await asyncio.sleep(sleep_time_between_actions)
+        element = page.locator(xpath)
 
-    await page.click(ID.CALENDAR_HEADER_BTN_ID)
-    await asyncio.sleep(sleep_time_between_actions)
+        if await element.count() > 0:
+            all_element_exists = True and all_element_exists
 
-    await page.click(ID.SETTINGS_HEADER_BTN_ID)
+        else:
+            all_element_exists = False and all_element_exists
+
+        await page.click(xpath)
+        await asyncio.sleep(sleep_time_between_actions)
+
+    Reports.ELEMENTS['header_elements_exists'] = all_element_exists
 
 
 async def add_new_event(page: Page):
@@ -277,7 +290,10 @@ async def add_new_event(page: Page):
 
     ]
 
+    before = time.time()
     await page.goto(Link.DASHBOARD_LINK, wait_until='load')
+    after_loading = time.time()
+    Reports.TIME_OUTS['dashboard_add_event_timeout'] = after_loading - before
 
     await page.wait_for_selector(Xpath.NEW_EVENT_BTN_XPATH)
     await asyncio.sleep(sleep_time_between_actions * sleep_time_multiplication)
@@ -287,6 +303,7 @@ async def add_new_event(page: Page):
     await page.wait_for_selector(Xpath.EVENT_TITLE_INPUT_XPATH)
     await asyncio.sleep(sleep_time_between_actions * sleep_time_multiplication)
 
+    before = time.time()
     # Filling the Text Inputs
     for input in TEXT_INPUTS:
 
@@ -298,19 +315,18 @@ async def add_new_event(page: Page):
             await page.mouse.wheel(delta_x=0, delta_y=2000)
             await asyncio.sleep(sleep_time_between_actions / 2)
 
-        await page.click(xpath, force=True, no_wait_after=True)
+        # await page.click(xpath, force=True, no_wait_after=True)
+        await page.focus(xpath)
         await page.fill(xpath, value.capitalize() + ' Test', force=True, no_wait_after=False)
-        await asyncio.sleep(sleep_time_between_actions)
-
-        if 'tags' in value:
-            await asyncio.sleep(sleep_time_between_actions / 2)
-            await page.mouse.wheel(delta_x=0, delta_y=-2000)
-            await asyncio.sleep(sleep_time_between_actions / 2)
+        await asyncio.sleep(sleep_time_between_actions / 2)
 
         if 'north' in value:
             await page.click(Xpath.NORTH_OPTION_XPATH)
             await asyncio.sleep(sleep_time_between_actions)
+    after_loading = time.time()
+    Reports.TIME_OUTS['add_event_text_filling_timeout'] = after_loading - before
 
+    before = time.time()
     # Choosing DropDown Options
     for drop_down in DROP_DOWNS:
 
@@ -319,7 +335,10 @@ async def add_new_event(page: Page):
 
         await page.click(Xpath.FIRST_OPTION_XPATH)
         await asyncio.sleep(sleep_time_between_actions)
+    after_loading = time.time()
+    Reports.TIME_OUTS['add_event_dropdowns_timeout'] = after_loading - before
 
+    before = time.time()
     # Handle Date Choosers
     for date_chooser in DATE_CHOOSERS:
 
@@ -327,17 +346,20 @@ async def add_new_event(page: Page):
         value: str = date_chooser.get('value')
 
         await page.click(xpath, force=True, no_wait_after=False)
-        await asyncio.sleep(sleep_time_between_actions)
+        await asyncio.sleep(sleep_time_between_actions / 2)
 
         await page.click(Xpath.MODIFY_DATE_TO_INPUT_MODE_XPATH, force=True, no_wait_after=False)
-        await asyncio.sleep(sleep_time_between_actions)
+        await asyncio.sleep(sleep_time_between_actions / 2)
 
         await page.fill(Xpath.DATE_INPUT_XPATH, value, force=True, no_wait_after=False)
-        await asyncio.sleep(sleep_time_between_actions)
+        await asyncio.sleep(sleep_time_between_actions / 2)
 
         await page.click(Xpath.DATE_OK_BTN_XPATH, force=True, no_wait_after=False)
-        await asyncio.sleep(sleep_time_between_actions)
+        await asyncio.sleep(sleep_time_between_actions / 2)
+    after_loading = time.time()
+    Reports.TIME_OUTS['add_event_dates_timeout'] = after_loading - before
 
+    before = time.time()
     # Handle Time Choosers
     for time_chooser in TIME_CHOOSERS:
 
@@ -365,7 +387,10 @@ async def add_new_event(page: Page):
 
         await page.click(Xpath.TIME_OK_BTN_XPATH, force=True, no_wait_after=False)
         await asyncio.sleep(sleep_time_between_actions)
+    after_loading = time.time()
+    Reports.TIME_OUTS['add_event_times_timeout'] = after_loading - before
 
+    before = time.time()
     # Add Event Logo
     await page.click(Xpath.DESIGN_BTN_XPATH, force=True, no_wait_after=False)
 
@@ -382,12 +407,15 @@ async def add_new_event(page: Page):
     # temporary_file_path: str = r"C:\Users\Administrator\Downloads\pexels-samaraagenstvo-feeria-2399097.jpg"
     temporary_file_path: str = r"C:\Users\Mohammed\Downloads\image-1-1651856047.jpg"
     await file_chooser.set_files(temporary_file_path)
+    after_loading = time.time()
+    Reports.TIME_OUTS['add_event_upload_logo_timeout'] = after_loading - before
 
     # Navigating to Tickets
     for tickets_map in TICKETS_MAPS:
         await page.click(tickets_map, force=True, no_wait_after=False)
         await asyncio.sleep(sleep_time_between_actions)
 
+    before = time.time()
     # Filling the Text Inputs of Tickets
     for tickets in TICKETS_XPATH_VALUES:
         xpath: str = tickets.get('xpath')
@@ -404,6 +432,8 @@ async def add_new_event(page: Page):
         await page.click(xpath, force=True, no_wait_after=False)
         await page.fill(xpath, value, force=True, no_wait_after=False)
         await asyncio.sleep(sleep_time_between_actions)
+    after_loading = time.time()
+    Reports.TIME_OUTS['add_event_tickets_text_filling_timeout'] = after_loading - before
 
     # Navigating to Tiers
     for tiers_map in TIERS_MAPS:
@@ -411,6 +441,7 @@ async def add_new_event(page: Page):
         await page.click(tiers_map, force=True, no_wait_after=False)
         await asyncio.sleep(sleep_time_between_actions)
 
+    before = time.time()
     # Filling the Text Inputs of Tiers
     for tiers in TIERS_XPATH_VALUES:
         xpath: str = tiers.get('xpath')
@@ -419,6 +450,8 @@ async def add_new_event(page: Page):
         await page.click(xpath, force=True, no_wait_after=False)
         await page.fill(xpath, value, force=True, no_wait_after=False)
         await asyncio.sleep(sleep_time_between_actions)
+    after_loading = time.time()
+    Reports.TIME_OUTS['add_event_tiers_text_filling_timeout'] = after_loading - before
 
     await page.click(
         Xpath.INVENTORY_CHECKBOX_XPATH,
@@ -433,19 +466,17 @@ async def add_new_event(page: Page):
     ]
 
     for i, publishing_xpath in enumerate(PUBLISHING_XPATHS, start=1):
-        multi = 7
+        multi = 4
 
         # Clicked on Apply Tier Btn 1
         if i == 1:
             apply_btn = page.get_by_role('button')
             await apply_btn.click()
-            print('Clicked', apply_btn)
             await asyncio.sleep(sleep_time_between_actions * multi)
 
         await page.wait_for_selector(publishing_xpath)
         await asyncio.sleep(sleep_time_between_actions)
         await page.click(publishing_xpath, force=True)
-        print('Clicked', publishing_xpath)
 
         if i == 3:
             multi = 1

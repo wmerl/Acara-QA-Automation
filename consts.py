@@ -1,5 +1,6 @@
 
 
+
 class Xpath(object):
 
     # region Sign In Page Elements Xpaths
@@ -160,8 +161,6 @@ class Xpath(object):
     # endregion
 
 
-
-
 class Link(object):
     MAIN_LINK: str = 'https://acara-landing.web.app/#'
 
@@ -213,3 +212,10 @@ class Credentials(object):
     LAST_NAME: str = 'Last Name'
     TEST_EMAIL: str = 'example.email@gmail.com'
     TEST_PASSWORD: str = 'this_is_a_password_001'
+
+
+class Reports(object):
+
+    TIME_OUTS: dict[str: float] = {}
+    ELEMENTS: dict = {}
+

@@ -1,11 +1,15 @@
 import asyncio
+import json
+import time
 
 from colorama import init
 from playwright.async_api import async_playwright, Playwright, ViewportSize, Position
-from consts import Xpath, Link, ID
+from consts import Xpath, Link, ID, Reports
 from helpers.browser_automation_helpers import sign_in, test_header_buttons_elements, add_new_event, buy_a_tickets, \
     check_reports, check_charts, sign_out, sign_up
 from colorama import Fore, Back, Style
+
+from helpers.reports_helpers import print_reports
 
 init()
 
@@ -35,8 +39,11 @@ async def run(playwright: Playwright):
     # await test_header_buttons_elements(page)
     # await asyncio.sleep(1)
 
-    # await add_new_event(page)
-    # await asyncio.sleep(1)
+    before = time.time()
+    await add_new_event(page)
+    after_loading = time.time()
+    Reports.TIME_OUTS['add_event_process_timeout'] = after_loading - before
+    await asyncio.sleep(1)
 
     # await buy_a_tickets(page)
     # await asyncio.sleep(1)
@@ -50,7 +57,10 @@ async def run(playwright: Playwright):
     # await sign_out(page)
     # await asyncio.sleep(1)
 
-    await asyncio.sleep(50000)
+    print_reports()
+
+    # await asyncio.sleep(50000)
+    await page.close()
 
 
 async def main():
