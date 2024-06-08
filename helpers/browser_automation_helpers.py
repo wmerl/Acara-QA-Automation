@@ -311,14 +311,14 @@ async def add_new_event(page: Page):
         value: str = input.get('value')
 
         if 'tags' in value:
-            await asyncio.sleep(sleep_time_between_actions / 2)
+            await asyncio.sleep(sleep_time_between_actions)
             await page.mouse.wheel(delta_x=0, delta_y=2000)
-            await asyncio.sleep(sleep_time_between_actions / 2)
+            await asyncio.sleep(sleep_time_between_actions)
 
         # await page.click(xpath, force=True, no_wait_after=True)
         await page.focus(xpath)
         await page.fill(xpath, value.capitalize() + ' Test', force=True, no_wait_after=False)
-        await asyncio.sleep(sleep_time_between_actions / 2)
+        await asyncio.sleep(sleep_time_between_actions)
 
         if 'north' in value:
             await page.click(Xpath.NORTH_OPTION_XPATH)
@@ -346,16 +346,16 @@ async def add_new_event(page: Page):
         value: str = date_chooser.get('value')
 
         await page.click(xpath, force=True, no_wait_after=False)
-        await asyncio.sleep(sleep_time_between_actions / 2)
+        await asyncio.sleep(sleep_time_between_actions)
 
         await page.click(Xpath.MODIFY_DATE_TO_INPUT_MODE_XPATH, force=True, no_wait_after=False)
-        await asyncio.sleep(sleep_time_between_actions / 2)
+        await asyncio.sleep(sleep_time_between_actions)
 
         await page.fill(Xpath.DATE_INPUT_XPATH, value, force=True, no_wait_after=False)
-        await asyncio.sleep(sleep_time_between_actions / 2)
+        await asyncio.sleep(sleep_time_between_actions)
 
         await page.click(Xpath.DATE_OK_BTN_XPATH, force=True, no_wait_after=False)
-        await asyncio.sleep(sleep_time_between_actions / 2)
+        await asyncio.sleep(sleep_time_between_actions)
     after_loading = time.time()
     Reports.TIME_OUTS['add_event_dates_timeout'] = after_loading - before
 
@@ -374,13 +374,13 @@ async def add_new_event(page: Page):
         await asyncio.sleep(sleep_time_between_actions)
 
         await page.click(Xpath.TIME_HOUR_TEXTEREA_XPATH, force=True, no_wait_after=False)
-        await asyncio.sleep(sleep_time_between_actions/2)
+        await asyncio.sleep(sleep_time_between_actions)
 
         await page.fill(Xpath.TIME_HOUR_TEXTEREA_XPATH, hour_value, force=True, no_wait_after=False)
         await asyncio.sleep(sleep_time_between_actions)
 
         await page.click(Xpath.TIME_MINUTES_TEXTEREA_XPATH, force=True, no_wait_after=False)
-        await asyncio.sleep(sleep_time_between_actions / 2)
+        await asyncio.sleep(sleep_time_between_actions)
 
         await page.fill(Xpath.TIME_MINUTES_TEXTEREA_XPATH, minutes_value, force=True, no_wait_after=False)
         await asyncio.sleep(sleep_time_between_actions)
@@ -458,7 +458,24 @@ async def add_new_event(page: Page):
         force=True,
         no_wait_after=False
     )
-    await asyncio.sleep(sleep_time_between_actions*2)
+
+    await asyncio.sleep(sleep_time_between_actions)
+
+    # Filling LESS_THAN_INPUT
+    element = await page.query_selector(Xpath.INVENTORY_CHECKBOX_XPATH)
+    box = await element.bounding_box()
+    await page.mouse.move(box['x'] + box['width'] / 2, box['y'] + box['height'] + (box['height'] * 1/2))
+
+    # Clicking the element with mouse
+    await page.mouse.down()
+    await asyncio.sleep(0.1)
+
+    # Typing
+    await page.keyboard.type('300')
+    await asyncio.sleep(sleep_time_between_actions)
+
+    await page.mouse.up()
+    await asyncio.sleep(sleep_time_between_actions)
 
     PUBLISHING_XPATHS: list[str] = [
         Xpath.APPLY_TIER_BTN_2_XPATH,
@@ -490,6 +507,7 @@ async def buy_a_tickets(page: Page):
     current_url: str = page.url
 
     if current_url != Link.MAIN_LINK:
+        await page.goto(Link.MAIN_LINK)
         await page.click(ID.HOME_HEADER_BTN_ID)
 
     PURCHASE_XPATHS: list[str] = [

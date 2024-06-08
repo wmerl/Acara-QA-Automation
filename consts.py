@@ -3,12 +3,12 @@ class AutomationParams(object):
 
     SIGN_IN: bool = True
     SIGN_UP: bool = False
-    TEST_HEADER_BUTTONS_ELEMENTS: bool = True
-    ADD_NEW_EVENT: bool = False
-    BUY_A_TICKETS: bool = False
-    CHECK_REPORTS: bool = True
-    CHECK_CHARTS: bool = True
-    SIGN_OUT: bool = True
+    TEST_HEADER: bool = False
+    ADD_NEW_EVENT: bool = True
+    BUY_A_TICKETS: bool = True
+    CHECK_REPORTS: bool = False
+    CHECK_CHARTS: bool = False
+    SIGN_OUT: bool = False
     PRINT_REPORTS: bool = True
 
 
@@ -156,7 +156,7 @@ class Xpath(object):
     PAGINATION_BTN_XPATH: str = '//html/body/flutter-view/flt-semantics-host/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[6]/flt-semantics-container/flt-semantics[12]/flt-semantics-container/flt-semantics[1]'
     EVENT_SECTION_XPATH: str = '//html/body/flutter-view/flt-semantics-host/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[6]/flt-semantics-container/flt-semantics[11]/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics'
     TICKET_ELEMENT_XPATH: str = '//html/body/flutter-view/flt-semantics-host/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[1]/flt-semantics-container/flt-semantics[6]/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[1]/flt-semantics-container/flt-semantics'
-    ADD_TIER_BTN_XPATH: str = '//html/body/flutter-view/flt-semantics-host/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[3]/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[2]/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[2]'
+    ADD_TIER_BTN_XPATH: str = '//html/body/flutter-view/flt-semantics-host/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[3]/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[2]'
     CHECKOUT_PURCHASE_BTN_XPATH: str = '//html/body/flutter-view/flt-semantics-host/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[6]'
     PAY_BTN_XPATH: str = '//*[@id="root"]/div/div[2]/div[2]/main/div/div[2]/form/div[1]/div/div/div[3]/div/div[2]/button/div[3]'
     # endregion

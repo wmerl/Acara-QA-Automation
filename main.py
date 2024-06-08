@@ -14,8 +14,6 @@ from helpers.reports_helpers import print_reports
 init()
 
 
-
-
 async def run(playwright: Playwright):
 
     user_data_dir: str = 'default'
@@ -40,7 +38,7 @@ async def run(playwright: Playwright):
         await sign_up(page)
 
     # Testing Header Elements
-    if AutomationParams.TEST_HEADER_BUTTONS_ELEMENTS:
+    if AutomationParams.TEST_HEADER:
         await test_header_buttons_elements(page)
 
     # Add New Event
