@@ -508,7 +508,32 @@ async def buy_a_tickets(page: Page):
 
     if current_url != Link.MAIN_LINK:
         await page.goto(Link.MAIN_LINK)
-        await page.click(ID.HOME_HEADER_BTN_ID)
+
+        try:
+            await page.click('//html/body/flutter-view/flt-semantics-host/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[1]', timeout=3_000)
+        except:
+            pass
+
+
+    texto = 'Title 128 Test'
+
+    elementt = None
+
+    while elementt is None or await elementt.count() == 0:
+        print('Searching')
+        try:
+            elementt = page.get_by_text(texto)
+        except:
+            pass
+
+        if elementt and await elementt.count() > 0:
+            await elementt.click()
+            await asyncio.sleep(1)
+
+        await asyncio.sleep(2)
+        print('Sleeping..')
+
+
 
     PURCHASE_XPATHS: list[str] = [
         Xpath.PAGINATION_BTN_XPATH,
@@ -531,7 +556,7 @@ async def buy_a_tickets(page: Page):
 
             continue
 
-        await asyncio.sleep(5)
+        await asyncio.sleep(1)
         await page.wait_for_selector(xpath)
         await page.click(xpath)
 
@@ -564,7 +589,7 @@ async def buy_a_tickets(page: Page):
 
     ]
 
-    await asyncio.sleep(5)
+    await asyncio.sleep(7)
 
     PAY_WITHOUT_LINK_BTN = None
 
@@ -803,3 +828,30 @@ async def sign_out(page: Page):
         await asyncio.sleep(sleep_time_between_actions)
 
 
+async def get_pagination_count(page: Page) -> int:
+    container = await page.query_selector_all(f"{Xpath.PAGINATION_CONTAINER_XPATH}/*")
+    element_count: int = len(container)
+    return element_count
+
+
+async def check_event_if_added(page: Page, event_title: str) -> bool:
+
+    pagination_count: int = await get_pagination_count(page)
+
+    # Navigating via Pagination Dotes And searching for the Targeted Event
+    for i in range(1, pagination_count+1):
+
+        await page.click(Xpath.PAGINATION_BTNS_XPATH.format(i))
+        await asyncio.sleep(0.5)
+
+        event_title_component = await page.query_selector(Xpath.SECTION_TITLE_XPATH)
+        await asyncio.sleep(0.5)
+
+        aria_label = await event_title_component.get_attribute('aria-label')
+
+        print(aria_label)
+
+        if aria_label and aria_label != '' and aria_label == event_title:
+            return True
+
+    return False

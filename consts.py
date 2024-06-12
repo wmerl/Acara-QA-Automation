@@ -4,11 +4,11 @@ class AutomationParams(object):
     SIGN_IN: bool = True
     SIGN_UP: bool = False
     TEST_HEADER: bool = False
-    ADD_NEW_EVENT: bool = True
+    ADD_NEW_EVENT: bool = False
     BUY_A_TICKETS: bool = True
     CHECK_REPORTS: bool = False
     CHECK_CHARTS: bool = False
-    SIGN_OUT: bool = False
+    SIGN_OUT: bool = True
     PRINT_REPORTS: bool = True
 
 
@@ -153,7 +153,9 @@ class Xpath(object):
     # endregion
 
     # region Purchase Page Elements Xpaths
-    PAGINATION_BTN_XPATH: str = '//html/body/flutter-view/flt-semantics-host/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[6]/flt-semantics-container/flt-semantics[12]/flt-semantics-container/flt-semantics[1]'
+    SECTION_TITLE_XPATH: str = '//html/body/flutter-view/flt-semantics-host/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[6]/flt-semantics-container/flt-semantics[8]'
+    PAGINATION_CONTAINER_XPATH: str = '//html/body/flutter-view/flt-semantics-host/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[6]/flt-semantics-container/flt-semantics[12]/flt-semantics-container'
+    PAGINATION_BTNS_XPATH: str = PAGINATION_CONTAINER_XPATH + '/flt-semantics[{}]'
     EVENT_SECTION_XPATH: str = '//html/body/flutter-view/flt-semantics-host/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[6]/flt-semantics-container/flt-semantics[11]/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics'
     TICKET_ELEMENT_XPATH: str = '//html/body/flutter-view/flt-semantics-host/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[1]/flt-semantics-container/flt-semantics[6]/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[1]/flt-semantics-container/flt-semantics'
     ADD_TIER_BTN_XPATH: str = '//html/body/flutter-view/flt-semantics-host/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[3]/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics/flt-semantics-container/flt-semantics[2]'

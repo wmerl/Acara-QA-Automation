@@ -6,7 +6,7 @@ from colorama import init
 from playwright.async_api import async_playwright, Playwright, ViewportSize, Position
 from consts import Xpath, Link, ID, Reports, AutomationParams
 from helpers.browser_automation_helpers import sign_in, test_header_buttons_elements, add_new_event, buy_a_tickets, \
-    check_reports, check_charts, sign_out, sign_up
+    check_reports, check_charts, sign_out, sign_up, get_pagination_count, check_event_if_added
 from colorama import Fore, Back, Style
 
 from helpers.reports_helpers import print_reports
@@ -31,7 +31,18 @@ async def run(playwright: Playwright):
 
     # Sign in
     if AutomationParams.SIGN_IN:
+
         await sign_in(page)
+
+
+
+    await asyncio.sleep(5)
+
+    event_title = 'ULLAMCORPER VIVAMUS EVENT'
+
+    is_event_added: bool = await check_event_if_added(page, event_title)
+
+    print(is_event_added)
 
     # Sign UP
     if AutomationParams.SIGN_UP:
